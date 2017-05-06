@@ -5,6 +5,7 @@ var MINSPAWN = 4000;
 var MAXROCKV = 2.4;
 var MINROCKV = 1.5;
 var freqArray;
+var shootSound;
 
 //Variables
 var asteroids;
@@ -18,6 +19,14 @@ var cooldown = 0;
 var despawnTimeout;
 
 var powerup = undefined;
+
+function preload(){
+  try{
+    shootSound = loadSound("./shoot.wav");
+  }catch(e){
+    print("Sound could not be loaded");
+  }
+}
 
 function setup(){
     createCanvas(640,480);

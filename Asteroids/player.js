@@ -90,6 +90,8 @@ function Player(){
     }.bind(this);
 
     this.shoot = function(){
+        if(shootSound) shootSound.play();
+
         var bulletVel = this.direction.copy();
         bulletVel.setMag(-8);
         bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.powerup));
