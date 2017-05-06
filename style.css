@@ -1,0 +1,21 @@
+body {
+  background-color: #ede24b;
+}
+
+div#header {
+  border-bottom: 1px solid black;
+  text-align: center;
+}
+
+h2{
+  margin: 10px;
+}
+
+div.list{
+  font-size: 20px;
+}
+
+ a{
+   color: blue;
+   text-decoration: none;
+ }
