@@ -107,11 +107,13 @@ function draw(){
 
 
 
-        for(let i = asteroids.length-1; i >= 0; i--){
+      //  for(let i = asteroids.length-1; i >= 0; i--){
+          for(let i = 0; i < asteroids.length; i++){
             asteroids[i].update();
 
             if(asteroids[i].dead){
                 asteroids.splice(i,1);
+                i--;
             }
         }
 

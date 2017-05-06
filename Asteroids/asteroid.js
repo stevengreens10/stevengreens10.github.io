@@ -46,7 +46,7 @@ function Asteroid(x,y,r){
                     if(random(100) < 50)
                         asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                 }
-
+                return;
             }
         }
     }
