@@ -23,7 +23,7 @@ function setup(){
     createCanvas(640,480);
     player = new Player();
     reset();
-  
+
        freqArray = [];
         for(var i = 0; i < 100; i++){
           if(i < 20){
@@ -72,7 +72,6 @@ function spawnAsteroid(){
     var time = map(score,0,30000,MAXSPAWN,MINSPAWN);
     if(time < MINSPAWN) time = MINSPAWN;
     if(timeout) clearTimeout(timeout);
-    print(time);
     timeout = setTimeout(spawnAsteroid,time);
 }
 
@@ -80,55 +79,55 @@ function draw(){
     background(51);
     if(player.lives > 0){
         player.update();
-        
+
         if(shooting){
            if(cooldown % 15 == 0 || cheating || player.powerup == 3){
                player.shoot();
            }
         }
-        
+
         cooldown++;
-        
+
         /* POWERUPS */
-        
+
         if(powerup && powerup.gotten == true) powerup = undefined;
-        
+
         if(random(1000) < 1.5 && !powerup && player.powerup == 0){
-          
+
           var id = freqArray[floor(random(freqArray.length))];
             powerup = new Powerup(random(width),random(height),id);
             if(despawnTimeout) clearTimeout(despawnTimeout);
             despawnTimeout = setTimeout(despawn,10000);
         }
-        
+
         if(powerup){
             powerup.update();
             powerup.display();
         }
-        
-        
-        
+
+
+
         for(let i = asteroids.length-1; i >= 0; i--){
             asteroids[i].update();
-            
+
             if(asteroids[i].dead){
                 asteroids.splice(i,1);
             }
         }
-        
+
         for(let i = bullets.length-1; i >= 0; i--){
             bullets[i].update();
-            
+
             if(bullets[i].dead){
                 bullets.splice(i,1);
             }
         }
-        
+
         fill(255);
         textSize(20);
         text("Lives: " + player.lives,25,50);
-        
-        
+
+
         //score++;
     }else{
         push();
@@ -140,8 +139,8 @@ function draw(){
     text("Lives: " + player.lives,25,50);
     text("Score: " + score,25,75);
 
-    
-    
+
+
 }
 
 function despawn(){
@@ -171,7 +170,7 @@ function keyPressed(){
           player = new Player();
           score = 0;
      }
-     
+
 
 }
 

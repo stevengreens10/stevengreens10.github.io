@@ -8,16 +8,15 @@ function setup(){
     //var canvas = createCanvas(windowWidth,windowHeight);
     //canvas.position(0,0);
     ship = new Ship();
-    for(var i = 0; i < 15; i++){
-        enemies.push(new Enemy(i*40+40,40,i % 2));
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,50,i % 2));
     }
-    /*for(var i = 0; i < 10; i++){
-        var id = (i+1) % 2;
-        enemies.push(new Enemy(i*50+50,120,id));
+    for(var i = 0; i < 10; i++){
+        enemies.push(new Enemy(i*50+50,120,i % 2));
    }
     for(var i = 0; i < 10; i++){
         enemies.push(new Enemy(i*50+50,190,i % 2));
-    }*/
+    }
 }
 
 /*function windowResized(){
@@ -28,41 +27,56 @@ function setup(){
 
 function draw(){
     background(0);
-    
+
     if(enemies.length == 0){
         fill(0,255,0);
         textSize(100);
         text("You win!", width/2-200,height/2);
-    }
-    if(ship.hp <0){
+    }else if(ship.hp <0){
         fill(255,0,0);
         textSize(100);
         text("You lose!", width/2-200,height/2);
     }
-    
-    
+
+    var maxX = enemies[0].pos.x;
+    var minX = enemies[0].pos.x;
+    var rightI = 0;
+    var leftI = 0;
+
     for(let i = 0; i < enemies.length; i++){
-       if(enemies[enemies.length-1].pos.x > width-10){
+      if(enemies[i].pos.x > maxX){
+        maxX = enemies[i].pos.x;
+        rightI = i;
+      }
+      if(enemies[i].pos.x < minX){
+        minX = enemies[i].pos.x;
+        leftI = i;
+      }
+    }
+
+    print(rightI);
+
+    for(let i = 0; i < enemies.length; i++){
+       if(enemies[rightI].pos.x > width-10){
            enemies[i].move();
-       }else if(enemies[0].pos.x < 10){
+       }else if(enemies[leftI].pos.x < 10){
            enemies[i].move();
        }
         enemies[i].update();
-        fill(255);
     }
-    
+
     if(stars.length <= 100){
         stars.push(new Star());
     }
-    
+
     for( let i = 0; i < stars.length; i++){
         stars[i].update();
-        
+
         if(stars[i].isOffScreen()){
             stars[i] = new Star();
         }
     }
-    
+
     for(let i = lasers.length-1; i>= 0; i--){
         lasers[i].update();
         for(let j = enemies.length -1; j>=0; j--){
@@ -71,12 +85,12 @@ function draw(){
                 lasers.splice(i,1);
             }
         }
-        
+
         if(lasers[i] && lasers[i].isOffScreen()){
             lasers.splice(i,1);
         }
-        
-       
+
+
     }
     ship.update();
 

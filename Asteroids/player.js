@@ -1,5 +1,5 @@
 function Player(){
-    this.pos = createVector(width/2,height/2); 
+    this.pos = createVector(width/2,height/2);
     this.speed = 0;
     this.r = 5;
     this.lives = 3;
@@ -7,18 +7,18 @@ function Player(){
     this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
     this.angleV = 0;
     this.powerup = 0;
-    
+
     this.update = function(){
         this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
-        
-        
-        
+
+
+
         var vel = this.direction.copy();
         vel.mult(this.speed);
-        
+
         this.pos.add(vel);
         this.angle+= this.angleV;
-        
+
 
 
         if(this.pos.x > width + this.r){
@@ -30,18 +30,18 @@ function Player(){
         }else if(this.pos.y < -this.r){
             this.pos.y = height + this.r;
         }
-        
+
         this.checkCollision();
-        
+
         this.display();
     }
-    
+
     this.display = function(){
        /* push();
             fill(255);
             ellipse(this.pos.x,this.pos.y,this.r*2,this.r*2);
         pop();*/
-        
+
         push();
             translate(this.pos.x,this.pos.y);
             rotate(this.angle);
@@ -51,13 +51,13 @@ function Player(){
             vertex(this.r,this.r*2);
             endShape(CLOSE);
         pop();
-        
+
     }
-    
+
     this.checkCollision = function(){
         for(var i = 0; i < asteroids.length; i++){
             var d = dist(this.pos.x,this.pos.y,asteroids[i].pos.x,asteroids[i].pos.y);
-            
+
             if(d < this.r + asteroids[i].r){
                 this.lives--;
                 if(this.lives <=0){
@@ -69,7 +69,7 @@ function Player(){
             }
         }
     }
-    
+
     this.applyPowerup = function(id){
         this.powerup = id;
         if(this.powerup == 1)
@@ -84,31 +84,31 @@ function Player(){
             setTimeout(this.removePowerup,8000); //Triple shot
         }
     }
-    
+
     this.removePowerup = function(){
         this.powerup = 0;
     }.bind(this);
-    
+
     this.shoot = function(){
         var bulletVel = this.direction.copy();
         bulletVel.setMag(-8);
-        bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel));
-        
+        bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.powerup));
+
         if(this.powerup == 2){
             var bulletVel = this.direction.copy();
             bulletVel.setMag(8);
-            bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.powerup));
         }else if(this.powerup == 5){
             var offset = PI/6;
             var v1 = createVector(this.direction.x * cos(offset) - (this.direction.y * sin(offset)), this.direction.x * sin(offset) + this.direction.y * cos(offset));
             var v2 = createVector(this.direction.x * cos(-offset) - (this.direction.y * sin(-offset)), this.direction.x * sin(-offset) + this.direction.y * cos(-offset));
             v1.setMag(-8);
             v2.setMag(-8);
-            bullets.push(new Bullet(this.pos.x,this.pos.y,v1));
-            bullets.push(new Bullet(this.pos.x,this.pos.y,v2));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,v1,this.powerup));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,v2,this.powerup));
 
 
         }
-        
+
     }
 }
