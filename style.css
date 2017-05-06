@@ -15,6 +15,23 @@ div.list{
   font-size: 20px;
 }
 
+div#footer{
+  width: 80%;
+  margin: auto;
+  font-size: 20px;
+  text-align: center;
+}
+
+div#footer ul{
+  margin: 0;
+  padding: 0;
+}
+
+div#footer li{
+  display: inline;
+  padding: 0px 20px 0 20px;
+}
+
  a{
    color: blue;
    text-decoration: none;
