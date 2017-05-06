@@ -15,20 +15,20 @@ var quick = false;
 
 function setup(){
     createCanvas(640,480);
-    
+
     frameRate(10);
-    
+
     nums = new Array(n);
-    
+
     for(var i = 0; i < nums.length;i++){
         nums[i] = int(random(0,range));
     }
-    
+
     createElement("br");
     createElement("span", "Set number of values to sort: ");
     slider = createSlider(2,maxNums,n);
     p = createP( slider.value() + " values");
-    
+
 }
 
 function draw(){
@@ -47,17 +47,17 @@ function draw(){
                     swaps++;
                 }
                 comparisons++;
-                
+
             }
             if(swaps == 0){
                 sorted = true;
             }
-        
-    
+
+
     k++;
    }
-   
-   
+
+
    //Insertion sorting
    if(insertion == true){
     var swapped = false;
@@ -78,16 +78,16 @@ function draw(){
     }
 
     k++;
-    
+
 
    }
-   
+
    if(quick == true){
-       
+
    }
     // Rendering rectangles
     var w = float(width/nums.length);
-    
+
     for(var i = 0; i < nums.length; i++){
         var x = i*w;
         var y =height;
@@ -97,22 +97,24 @@ function draw(){
         }else{
             fill(255);
         }
-        
+
         rect(x,y,w,h);
-        
+
         if(insertion == true){
             fill(255,0,0);
             rect(k*w,height,w,-height);
         }
-        
-        fill(0,0,255);
+        push();
+        stroke(0);
+        fill(0,200,100);
         text("# of Comparisons: " + comparisons, 20, 20);
         text("BubbleSort: " + bubble,20,40);
         text("InsertionSort: " + insertion,20,60);
         //text("QuickSort: " + quick,20,80);
-        
+        pop();
+
     }
-    
+
 }
 
 function keyPressed(){
@@ -143,7 +145,7 @@ function keyPressed(){
      }else{
          return;
      }
-     
+
      sorted =false;
      k = 1;
      comparisons = 0;
@@ -170,12 +172,12 @@ function bubbleSort(array){
                     if(swaps === 0){
                         sorted = true;
                         break;
-                    }   
+                    }
                 }
            if(sorted){
                break;
-           }   
-           
+           }
+
         }
     return array;
 }
