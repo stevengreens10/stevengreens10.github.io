@@ -82,6 +82,8 @@ function Player(){
             setTimeout(this.removePowerup,10000); // Penetrating shot
         }else if(this.powerup == 5){
             setTimeout(this.removePowerup,8000); //Triple shot
+        }else{
+            setTimeout(this.removePowerup,8000);
         }
     }
 

@@ -1,6 +1,19 @@
-function Asteroid(x,y,r){
+function Asteroid(x,y,r,frozen){
     this.pos = createVector(x,y);
     this.vel = p5.Vector.random2D();
+    this.frozen;
+
+    this.unFreeze = function(){
+      print("Unfreeze");
+      this.frozen = false;
+    }.bind(this);
+
+    if(frozen){
+      this.frozen = frozen;
+      setTimeout(this.unFreeze,500);
+    }else{
+      this.frozen = false;
+    }
     var speed = map(r,30,10,MINROCKV,MAXROCKV);
     this.vel.mult(speed);
 
@@ -8,7 +21,7 @@ function Asteroid(x,y,r){
     this.dead = false;
 
     this.update = function(){
-        this.pos.add(this.vel);
+        if(!this.frozen) this.pos.add(this.vel);
         this.hit();
 
         if(this.pos.x > width + this.r){
@@ -38,16 +51,24 @@ function Asteroid(x,y,r){
 
             if(d < this.r + 5){
                 this.dead = true;
-                if(bullets[i].effect != 4) bullets.splice(i,1);
                 if(!cheating) score += round(this.r*5);
                 if(this.r > 10){
-                    asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
-                    asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
+                    var freeze = false;
+                    if(bullets[i].effect == 6){
+                      freeze = true;
+                    }
+                    asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2,freeze));
+                    asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2,freeze));
                     if(random(100) < 50)
-                        asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
+                        asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2,freeze));
                 }
+
+                if(bullets[i].effect != 4) bullets.splice(i,1);
+
                 return;
             }
         }
     }
+
+
 }

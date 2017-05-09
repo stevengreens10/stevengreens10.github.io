@@ -20,6 +20,8 @@ function Powerup(x,y,id){
             fill(100,200,100);
         }else if(this.id == 5){
             fill(200,100,100);
+        }else if(this.id == 6){
+            fill(66, 173, 244);
         }
 
         ellipse(this.pos.x,this.pos.y,20,20);

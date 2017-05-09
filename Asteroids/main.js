@@ -25,8 +25,8 @@ function setup(){
     reset();
 
        freqArray = [];
-        for(var i = 0; i < 100; i++){
-          if(i < 20){
+        for(var i = 1; i <= 6; i++){
+        /*  if(i < 20){
             freqArray[i] = 1;
           }else if(i >= 20 && i < 40){
             freqArray[i] = 2;
@@ -36,7 +36,8 @@ function setup(){
             freqArray[i] = 4;
           }else if(i >= 80 && i < 100){
             freqArray[i] = 5;
-          }
+          }*/
+          freqArray.push(i);
         }
 
 }

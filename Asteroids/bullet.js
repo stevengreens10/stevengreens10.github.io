@@ -22,6 +22,8 @@ function Bullet(x,y,vel,effect){
             fill(100,200,100);
         }else if(this.effect == 5){
             fill(200,100,100);
+        }else if(this.effect == 6){
+            fill(66, 173, 244);
         }else{
             fill(255,0,0);
         }
