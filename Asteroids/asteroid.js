@@ -4,7 +4,6 @@ function Asteroid(x,y,r,frozen){
     this.frozen;
 
     this.unFreeze = function(){
-      print("Unfreeze");
       this.frozen = false;
     }.bind(this);
 
