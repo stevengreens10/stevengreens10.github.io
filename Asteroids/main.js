@@ -99,14 +99,14 @@ function draw(){
             if(!powerupExists(id) && !player.hasPowerup(id)) spawnPowerup(id);
         }
 
-        for(var p = 0; p < powerups.length; p++){
+        for(var p = powerups.length-1; p >= 0; p--){
             var powerup = powerups[p];
             
             if(powerup){
                 powerup.update();
                 
                 if(powerup.gotten){
-                    powerups[p] = undefined;
+                    powerups.splice(p,1);
                 }
             }
         }
@@ -215,4 +215,3 @@ function powerupExists(id){
     
     return false;
 }
-
