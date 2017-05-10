@@ -1,6 +1,7 @@
 function setup(){
     noCanvas();
-
+    var video = createCapture(VIDEO);
+    video.play();
 }
 
 function deviceTurned(){
