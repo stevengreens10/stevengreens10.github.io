@@ -45,8 +45,8 @@ function Asteroid(x,y,r){
                 if(this.r > 10){
                     var freeze = false;
                     var babies = [];
-                    if(bullets[i].effect == 6) freeze = true;
-                 
+                    if(bullets[i].hasEffect(6)) freeze = true;
+
                     babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                     babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                     if(random(100) < 50)
@@ -58,7 +58,7 @@ function Asteroid(x,y,r){
                     }
                 }
 
-                if(bullets[i].effect != 4) bullets.splice(i,1);
+                if(!bullets[i].hasEffect(4)) bullets.splice(i,1);
 
                 return;
             }
