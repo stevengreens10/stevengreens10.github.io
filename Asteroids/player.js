@@ -104,7 +104,7 @@ function Player(){
     this.shoot = function(){
         var bulletVel = this.direction.copy();
         bulletVel.setMag(-8);
-        bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.effects));
+        bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.effects.slice()));
 
         if(this.hasPowerup(2)){
             var bulletVel = this.direction.copy();
@@ -116,8 +116,8 @@ function Player(){
             var v2 = createVector(this.direction.x * cos(-offset) - (this.direction.y * sin(-offset)), this.direction.x * sin(-offset) + this.direction.y * cos(-offset));
             v1.setMag(-8);
             v2.setMag(-8);
-            bullets.push(new Bullet(this.pos.x,this.pos.y,v1,this.effects));
-            bullets.push(new Bullet(this.pos.x,this.pos.y,v2,this.effects));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,v1,this.effects.slice()));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,v2,this.effects.slice()));
 
 
         }
