@@ -1,18 +1,8 @@
-function Asteroid(x,y,r,frozen){
+function Asteroid(x,y,r){
     this.pos = createVector(x,y);
     this.vel = p5.Vector.random2D();
-    this.frozen;
-
-    this.unFreeze = function(){
-      this.frozen = false;
-    }.bind(this);
-
-    if(frozen){
-      this.frozen = frozen;
-      setTimeout(this.unFreeze,500);
-    }else{
-      this.frozen = false;
-    }
+    this.frozen = false;
+    
     var speed = map(r,30,10,MINROCKV,MAXROCKV);
     this.vel.mult(speed);
 
@@ -45,7 +35,7 @@ function Asteroid(x,y,r,frozen){
     }
 
     this.hit = function(){
-        for(var i = bullets.length - 1; i >= 0; i--){
+        for(let i = bullets.length - 1; i >= 0; i--){
             var d = dist(this.pos.x,this.pos.y,bullets[i].pos.x,bullets[i].pos.y);
 
             if(d < this.r + 5){
@@ -53,13 +43,18 @@ function Asteroid(x,y,r,frozen){
                 if(!cheating) score += round(this.r*5);
                 if(this.r > 10){
                     var freeze = false;
-                    if(bullets[i].effect == 6){
-                      freeze = true;
-                    }
-                    asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2,freeze));
-                    asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2,freeze));
+                    var babies = [];
+                    if(bullets[i].effect == 6) freeze = true;
+                 
+                    babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
+                    babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                     if(random(100) < 50)
-                        asteroids.push(new Asteroid(this.pos.x,this.pos.y,this.r/2,freeze));
+                        babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
+                    
+                    for(let j = 0; j < babies.length; j++){
+                        if(freeze) babies[i].applyFreeze();
+                        asteroids.push(babies[j];
+                    }
                 }
 
                 if(bullets[i].effect != 4) bullets.splice(i,1);
@@ -69,5 +64,13 @@ function Asteroid(x,y,r,frozen){
         }
     }
 
+    this.applyFreeze(){
+        this.frozen = true;
+        setTimeout(this.unFreeze,500);
+    }
+    
+    this.unFreeze = function(){
+      this.frozen = false;
+    }.bind(this);
 
 }
