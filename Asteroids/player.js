@@ -8,6 +8,7 @@ function Player(){
     this.angleV = 0;
     this.powerup = 0;
     this.effects = [];
+    this.invincible = false;
 
     this.update = function(){
         this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
@@ -60,16 +61,32 @@ function Player(){
             var d = dist(this.pos.x,this.pos.y,asteroids[i].pos.x,asteroids[i].pos.y);
 
             if(d < this.r + asteroids[i].r){
-                this.lives--;
-                if(this.lives <=0){
+                if(this.invincible == false){
+                  this.lives--;
+                  this.invincible = true;
+                  setTimeout(this.removeIncibility,1000);
+                  if(asteroids[i].r > 10){
+                    asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
+                    asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
+                    if(random(100) < 50)
+                      asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
+                  }
+                    asteroids.splice(i,1);
+                  return;
+                }
+                /*if(this.lives <=0){
                 }else{
                     this.pos.x = width/2;
                     this.pos.y = height/2;
                     reset();
-                }
+                }*/
             }
         }
     }
+
+    this.removeIncibility = function(){
+      this.invincible = false;
+    }.bind(this);
 
     this.applyPowerup = function(id){
         if(!this.hasPowerup(id)){
@@ -123,15 +140,15 @@ function Player(){
         }
 
     }
-    
+
     this.hasPowerup = function(id){
         for(var i = 0; i < this.effects.length; i++){
             if(this.effects[i] == id){
                 return true;
             }
         }
-        
+
         return false;
-        
+
     }
 }
