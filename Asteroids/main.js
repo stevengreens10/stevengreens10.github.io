@@ -16,18 +16,20 @@ var shooting = false;
 var cheating = false;
 var cooldown = 0;
 var despawnTimeout;
-var powerups = [1,2,3,4,5,6];
+var powerupList = [1,2,3,4,5,6];
 
-var powerup = undefined;
+var powerups = [];
 
 function setup(){
     createCanvas(640,480);
+    
     player = new Player();
+    
     reset();
 
        freqArray = [];
-        for(var i = 0; i < powerups.length; i++){
-            freqArray.push(powerups[i]); 
+        for(var i = 0; i < powerupList.length; i++){
+            freqArray.push(powerupList[i]); 
         }
 
 }
@@ -35,8 +37,8 @@ function setup(){
 function reset(){
   asteroids = [];
   bullets = [];
-  powerup = undefined;
-  player.powerup = 0;
+  powerups = [];
+  player.effects = [];
   spawnAsteroid();
 }
 
@@ -82,7 +84,7 @@ function draw(){
         player.update();
 
         if(shooting){
-           if(cooldown % 15 == 0 || cheating || player.powerup == 3){
+           if(cooldown % 15 == 0 || cheating || player.hasPowerup(3)){
                player.shoot();
            }
         }
@@ -91,17 +93,22 @@ function draw(){
 
         /* POWERUPS */
 
-        if(powerup && powerup.gotten == true) powerup = undefined;
 
-        if(random(1000) < 1.5 && !powerup && player.powerup == 0){
-
+        if(random(1000) < 1.5){
             var id = freqArray[floor(random(freqArray.length))];
             spawnPowerup(id);
         }
 
-        if(powerup){
-            powerup.update();
-            powerup.display();
+        for(var p = 0; p < powerups.length; p++){
+            var powerup = powerups[p];
+            
+            if(powerup){
+                powerup.update();
+                
+                if(powerup.gotten){
+                    powerups[p] = undefined;
+                }
+            }
         }
 
 
@@ -144,14 +151,13 @@ function draw(){
 
 }
 
-function despawn(){
-    powerup = undefined;
+function despawn(index){
+    powerups[index] = undefined;
 }
 
 function spawnPowerup(id){
-    powerup = new Powerup(random(width),random(height),id);
-    if(despawnTimeout) clearTimeout(despawnTimeout);
-    despawnTimeout = setTimeout(despawn,10000);
+    powerups.push(new Powerup(random(width),random(height),id));
+    setTimeout(despawn,10000,powerups.length-1);
 }
 
 function keyPressed(){
