@@ -36,7 +36,7 @@ function Bullet(x,y,vel,effects){
 
     this.offScreen = function(){
         if(this.pos.x > width || this.pos.x < 0 || this.pos.y < 0 || this.pos.y > height){
-            if(!this.hasEffect(1)){
+            if(!player.hasPowerup(1)){
                 this.dead = true;
             }else{
                 if(this.pos.x > width){
