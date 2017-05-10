@@ -2,10 +2,10 @@ function setup(){
 }
 
 function deviceTurned(){
-    print("Turn");
+    createP("Turn");
 }
 
 function mousePressed(){
-    print("Click");
+    createP("Click");
     return false;
 }
