@@ -187,3 +187,19 @@ p5.prototype.loadTable2 = function (path) {
 
   return t;
 };
+
+function makeObject(row, headers) {
+  var ret = {};
+  headers = headers || [];
+  if (typeof (headers) === 'undefined') {
+    for (var j = 0; j < row.length; j++) {
+      headers[j.toString()] = j;
+    }
+  }
+  for (var i = 0; i < headers.length; i++) {
+    var key = headers[i];
+    var val = row[i];
+    ret[key] = val;
+  }
+  return ret;
+}
