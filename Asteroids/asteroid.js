@@ -10,7 +10,8 @@ function Asteroid(x,y,r){
     this.dead = false;
 
     this.update = function(){
-        if(!this.frozen) this.pos.add(this.vel);
+        if(!this.frozen) this.vel.setMag(0.05);
+        this.pos.add(this.vel);
         this.hit();
 
         if(this.pos.x > width + this.r){
@@ -71,6 +72,7 @@ function Asteroid(x,y,r){
     
     this.unFreeze = function(){
       this.frozen = false;
+       this.vel.setMag(speed);
     }.bind(this);
 
 }
