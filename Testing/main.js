@@ -1,4 +1,5 @@
 function setup(){
+    noCanvas();
 }
 
 function deviceTurned(){
