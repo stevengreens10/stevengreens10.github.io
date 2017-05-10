@@ -1,4 +1,4 @@
-p5.prototype.loadTable = function (path) {
+p5.prototype.loadTable2 = function (path) {
   var callback = null;
   var errorCallback = null;
   var options = [];
