@@ -10,7 +10,7 @@ function Asteroid(x,y,r){
     this.dead = false;
 
     this.update = function(){
-        if(!this.frozen) this.vel.setMag(0.05);
+        if(this.frozen) this.vel.setMag(0.5);
         this.pos.add(this.vel);
         this.hit();
 
@@ -46,6 +46,7 @@ function Asteroid(x,y,r){
                     var freeze = false;
                     var babies = [];
                     if(bullets[i].effect == 6) freeze = true;
+                    print(freeze);
                  
                     babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                     babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
@@ -53,7 +54,7 @@ function Asteroid(x,y,r){
                         babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                     
                     for(let j = 0; j < babies.length; j++){
-                        if(freeze) babies[i].applyFreeze();
+                        if(freeze) babies[j].applyFreeze();
                         asteroids.push(babies[j]);
                     }
                 }
@@ -65,9 +66,9 @@ function Asteroid(x,y,r){
         }
     }
 
-    this.applyFreeze(){
+    this.applyFreeze = function(){
         this.frozen = true;
-        setTimeout(this.unFreeze,500);
+        setTimeout(this.unFreeze,1000);
     }
     
     this.unFreeze = function(){
