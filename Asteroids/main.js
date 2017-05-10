@@ -16,6 +16,7 @@ var shooting = false;
 var cheating = false;
 var cooldown = 0;
 var despawnTimeout;
+var powerups = [1,2,3,4,5,6];
 
 var powerup = undefined;
 
@@ -25,18 +26,8 @@ function setup(){
     reset();
 
        freqArray = [];
-        for(var i = 0; i < 100; i++){
-          if(i < 20){
-            freqArray[i] = 1;
-          }else if(i >= 20 && i < 40){
-            freqArray[i] = 2;
-          }else if(i >= 40 && i < 60){
-              freqArray[i] = 3;
-          }else if(i >= 60 && i < 80){
-            freqArray[i] = 4;
-          }else if(i >= 80 && i < 100){
-            freqArray[i] = 5;
-          }
+        for(var i = 0; i < powerups.length; i++){
+            freqArray.push(powerups[i]); 
         }
 
 }
