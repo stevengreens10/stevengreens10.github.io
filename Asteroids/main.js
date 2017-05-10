@@ -22,14 +22,14 @@ var powerups = [];
 
 function setup(){
     createCanvas(640,480);
-    
+
     player = new Player();
-    
+
     reset();
 
        freqArray = [];
         for(var i = 0; i < powerupList.length; i++){
-            freqArray.push(powerupList[i]); 
+            freqArray.push(powerupList[i]);
         }
 
 }
@@ -101,10 +101,10 @@ function draw(){
 
         for(var p = powerups.length-1; p >= 0; p--){
             var powerup = powerups[p];
-            
+
             if(powerup){
                 powerup.update();
-                
+
                 if(powerup.gotten){
                     powerups.splice(p,1);
                 }
@@ -184,6 +184,7 @@ function keyPressed(){
         }else if(keyCode == 191){
             cheating = !cheating;
             shooting = false;
+            score = 0;
         }
     }if(key == 'R'){
           reset();
@@ -212,6 +213,6 @@ function powerupExists(id){
             return true;
         }
     }
-    
+
     return false;
 }
