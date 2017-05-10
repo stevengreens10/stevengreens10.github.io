@@ -1,8 +1,8 @@
-function Bullet(x,y,vel,effect){
+function Bullet(x,y,vel,effects){
     this.pos = createVector(x,y);
     this.vel = vel;
     this.dead = false;
-    this.effect = effect;
+    this.effects = effects;
 
     this.update = function(){
         this.pos.add(this.vel);
@@ -12,17 +12,20 @@ function Bullet(x,y,vel,effect){
 
     this.display = function(){
         push();
-        if(this.effect == 1){
+        
+        var effect = effects[effects.length-1];
+        
+        if(effect == 1){
             fill(255,0,125);
-        }else if(this.effect == 2){
+        }else if(effect == 2){
             fill(0,255,0);
-        }else if(this.effect == 3){
+        }else if(effect == 3){
             fill(226,224,66);
-        }else if(this.effect == 4){
+        }else if(effect == 4){
             fill(100,200,100);
-        }else if(this.effect == 5){
+        }else if(effect == 5){
             fill(200,100,100);
-        }else if(this.effect == 6){
+        }else if(effect == 6){
             fill(66, 173, 244);
         }else{
             fill(255,0,0);
@@ -33,7 +36,7 @@ function Bullet(x,y,vel,effect){
 
     this.offScreen = function(){
         if(this.pos.x > width || this.pos.x < 0 || this.pos.y < 0 || this.pos.y > height){
-            if(this.effect != 1){
+            if(!this.hasEffect(1)){
                 this.dead = true;
             }else{
                 if(this.pos.x > width){
@@ -47,5 +50,16 @@ function Bullet(x,y,vel,effect){
                 }
             }
         }
+    }
+    
+    this.hasEffect = function(id){
+        for(var i = 0; i < this.effects.length; i++){
+            if(this.effects[i] == id){
+                return true;
+            }
+        }
+        
+        return false;
+        
     }
 }
