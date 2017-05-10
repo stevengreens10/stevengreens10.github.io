@@ -7,6 +7,7 @@ function Player(){
     this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
     this.angleV = 0;
     this.powerup = 0;
+    this.effects = [];
 
     this.update = function(){
         this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
@@ -71,46 +72,66 @@ function Player(){
     }
 
     this.applyPowerup = function(id){
-        this.powerup = id;
-        if(this.powerup == 1)
-            setTimeout(this.removePowerup,8000); // Bullets loop through walls
-        if(this.powerup == 2){
-            setTimeout(this.removePowerup,12000); // Fire a bullet behind you
-        }else if(this.powerup == 3){
-            setTimeout(this.removePowerup,4500); // OP MODE
-        }else if(this.powerup == 4){
-            setTimeout(this.removePowerup,10000); // Penetrating shot
-        }else if(this.powerup == 5){
-            setTimeout(this.removePowerup,8000); //Triple shot
-        }else{
-            setTimeout(this.removePowerup,8000);
+        if(!this.hasPowerup(id)){
+            this.effects.push(id);
+            if(id == 1)
+                setTimeout(this.removePowerup,8000,id); // Bullets loop through walls
+            if(id == 2){
+                setTimeout(this.removePowerup,12000,id); // Fire a bullet behind you
+            }else if(id == 3){
+                setTimeout(this.removePowerup,4500,id); // OP MODE
+            }else if(id == 4){
+                setTimeout(this.removePowerup,10000,id); // Penetrating shot
+            }else if(id == 5){
+                setTimeout(this.removePowerup,8000,id); //Triple shot
+            }else if(id == 6){
+                setTimeout(this.removePowerup,9000,id); //Freeze shot
+            }else{
+                setTimeout(this.removePowerup,8000,id);
+            }
         }
     }
 
-    this.removePowerup = function(){
-        this.powerup = 0;
+    this.removePowerup = function(id){
+        for(var i = 0; i < this.effects.length; i++){
+            if(this.effects[i] == id){
+                this.effects.splice(i,1);
+                return;
+            }
+        }
     }.bind(this);
 
     this.shoot = function(){
         var bulletVel = this.direction.copy();
         bulletVel.setMag(-8);
-        bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.powerup));
+        bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.effects));
 
-        if(this.powerup == 2){
+        if(this.hasPowerup(2)){
             var bulletVel = this.direction.copy();
             bulletVel.setMag(8);
-            bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.powerup));
-        }else if(this.powerup == 5){
+            bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.effects));
+        }if(this.hasPowerup(5)){
             var offset = PI/6;
             var v1 = createVector(this.direction.x * cos(offset) - (this.direction.y * sin(offset)), this.direction.x * sin(offset) + this.direction.y * cos(offset));
             var v2 = createVector(this.direction.x * cos(-offset) - (this.direction.y * sin(-offset)), this.direction.x * sin(-offset) + this.direction.y * cos(-offset));
             v1.setMag(-8);
             v2.setMag(-8);
-            bullets.push(new Bullet(this.pos.x,this.pos.y,v1,this.powerup));
-            bullets.push(new Bullet(this.pos.x,this.pos.y,v2,this.powerup));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,v1,this.effects));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,v2,this.effects));
 
 
         }
 
+    }
+    
+    this.hasPowerup = function(id){
+        for(var i = 0; i < this.effects.length; i++){
+            if(this.effects[i] == id){
+                return true;
+            }
+        }
+        
+        return false;
+        
     }
 }
