@@ -96,7 +96,7 @@ function draw(){
 
         if(random(1000) < 1.5){
             var id = freqArray[floor(random(freqArray.length))];
-            spawnPowerup(id);
+            if(!contains(powerups,id) && !player.hasPowerup(id)) spawnPowerup(id);
         }
 
         for(var p = 0; p < powerups.length; p++){
@@ -151,13 +151,18 @@ function draw(){
 
 }
 
-function despawn(index){
-    powerups[index] = undefined;
+function despawn(id){
+    for(var i = 0; i < powerups.length; i++){
+        if(powerups[i] == id){
+            powerups.splice(i,1);
+            return;
+        }
+    }
 }
 
 function spawnPowerup(id){
     powerups.push(new Powerup(random(width),random(height),id));
-    setTimeout(despawn,10000,powerups.length-1);
+    setTimeout(despawn,10000,id);
 }
 
 function keyPressed(){
@@ -197,4 +202,14 @@ function keyReleased(){
     }else if(key == ' '){
         shooting = false;
     }
+}
+
+function contains(array,element){
+    for(var i = 0; i < array.length; i++){
+        if(array[i] == element){
+            return true;
+        }
+    }
+    
+    return false;
 }
