@@ -75,7 +75,7 @@ function Player(){
         if(!this.hasPowerup(id)){
             this.effects.push(id);
             if(id == 1)
-                setTimeout(this.removePowerup,8000,id); // Bullets loop through walls
+                setTimeout(this.removePowerup,10000,id); // Bullets loop through walls
             if(id == 2){
                 setTimeout(this.removePowerup,12000,id); // Fire a bullet behind you
             }else if(id == 3){
