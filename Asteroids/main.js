@@ -85,10 +85,8 @@ function draw(){
 
         if(random(1000) < 1.5 && !powerup && player.powerup == 0){
 
-          var id = freqArray[floor(random(freqArray.length))];
-            powerup = new Powerup(random(width),random(height),id);
-            if(despawnTimeout) clearTimeout(despawnTimeout);
-            despawnTimeout = setTimeout(despawn,10000);
+            var id = freqArray[floor(random(freqArray.length))];
+            spawnPowerup(id);
         }
 
         if(powerup){
@@ -138,6 +136,12 @@ function draw(){
 
 function despawn(){
     powerup = undefined;
+}
+
+function spawnPowerup(id){
+    powerup = new Powerup(random(width),random(height),id);
+    if(despawnTimeout) clearTimeout(despawnTimeout);
+    despawnTimeout = setTimeout(despawn,10000);
 }
 
 function keyPressed(){
