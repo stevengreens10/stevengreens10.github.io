@@ -46,7 +46,6 @@ function Asteroid(x,y,r){
                     var freeze = false;
                     var babies = [];
                     if(bullets[i].effect == 6) freeze = true;
-                    print(freeze);
                  
                     babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
                     babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
