@@ -5,6 +5,8 @@ var MINSPAWN = 4000;
 var MAXROCKV = 2.4;
 var MINROCKV = 1.5;
 var freqArray;
+var powerupList = [1,2,3,4,5,6];
+
 
 //Variables
 var asteroids;
@@ -15,8 +17,6 @@ var timeout;
 var shooting = false;
 var cheating = false;
 var cooldown = 0;
-var despawnTimeout;
-var powerupList = [1,2,3,4,5,6];
 
 var powerups = [];
 
@@ -96,7 +96,7 @@ function draw(){
 
         if(random(1000) < 1.5){
             var id = freqArray[floor(random(freqArray.length))];
-            if(!contains(powerups,id) && !player.hasPowerup(id)) spawnPowerup(id);
+            if(!powerupExists(id) && !player.hasPowerup(id)) spawnPowerup(id);
         }
 
         for(var p = 0; p < powerups.length; p++){
@@ -161,8 +161,10 @@ function despawn(id){
 }
 
 function spawnPowerup(id){
-    powerups.push(new Powerup(random(width),random(height),id));
-    setTimeout(despawn,10000,id);
+    if(document.hasFocus()){
+        powerups.push(new Powerup(random(width),random(height),id));
+        setTimeout(despawn,10000,id);
+    }
 }
 
 function keyPressed(){
@@ -204,12 +206,13 @@ function keyReleased(){
     }
 }
 
-function contains(array,element){
-    for(var i = 0; i < array.length; i++){
-        if(array[i] == element){
+function powerupExists(id){
+    for(var i = 0; i < powerups.length; i++){
+        if(powerups[i].id == id){
             return true;
         }
     }
     
     return false;
 }
+
