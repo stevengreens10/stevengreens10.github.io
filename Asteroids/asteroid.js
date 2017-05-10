@@ -54,7 +54,7 @@ function Asteroid(x,y,r){
                     
                     for(let j = 0; j < babies.length; j++){
                         if(freeze) babies[i].applyFreeze();
-                        asteroids.push(babies[j];
+                        asteroids.push(babies[j]);
                     }
                 }
 
