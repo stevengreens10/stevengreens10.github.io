@@ -58,7 +58,17 @@ function spawnAsteroid(){
             y = height+50;
             x = random(width);
         }
-        asteroids.push(new Asteroid(x,y,30));
+        var r;
+        if(random(100) < 88){
+            r = 30;
+        }else{
+            if(random(100) < 10){
+                r = 15;
+            }else{
+                r = 7.5;
+            }
+        }
+        asteroids.push(new Asteroid(x,y,r));
     }
     var time = map(score,0,30000,MAXSPAWN,MINSPAWN);
     if(time < MINSPAWN) time = MINSPAWN;
