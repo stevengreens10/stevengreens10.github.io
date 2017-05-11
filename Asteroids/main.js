@@ -5,7 +5,7 @@ var MINSPAWN = 4000;
 var MAXROCKV = 2.4;
 var MINROCKV = 1.5;
 var freqArray;
-var powerupList = [1,2,3,4,5,6];
+var powerupList = [1,2,3,4,5,6,7];
 
 
 //Variables
@@ -96,6 +96,11 @@ function draw(){
 
         if(random(1000) < 1.5){
             var id = freqArray[floor(random(freqArray.length))];
+            if(powerups.length != powerupList.length){
+              while(powerupExists(id)){
+                id = freqArray[floor(random(freqArray.length))];
+              }
+            }
             if(!powerupExists(id) && !player.hasPowerup(id)) spawnPowerup(id);
         }
 
@@ -153,7 +158,7 @@ function draw(){
 
 function despawn(id){
     for(var i = 0; i < powerups.length; i++){
-        if(powerups[i] == id){
+        if(powerups[i].id == id){
             powerups.splice(i,1);
             return;
         }
@@ -170,9 +175,9 @@ function spawnPowerup(id){
 function keyPressed(){
     if(player.lives > 0){
         if(key == 'W' || keyCode == UP_ARROW){
-            player.speed = -2;
+            player.speed = -player.maxSpeed;
         }else if(key == 'S' || keyCode == DOWN_ARROW){
-            player.speed = 2;
+            player.speed = player.maxSpeed;
         }else if(key == 'A' || keyCode == LEFT_ARROW){
             player.angleV=-0.08;
         }else if(key == 'D' || keyCode == RIGHT_ARROW){

@@ -22,6 +22,8 @@ function Powerup(x,y,id){
             fill(200,100,100);
         }else if(this.id == 6){
             fill(66, 173, 244);
+        }else if(this.id == 7){
+            fill(247, 176, 22);
         }
 
         ellipse(this.pos.x,this.pos.y,20,20);

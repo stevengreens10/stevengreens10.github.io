@@ -1,5 +1,6 @@
 function Player(){
     this.pos = createVector(width/2,height/2);
+    this.maxSpeed = 2;
     this.speed = 0;
     this.r = 5;
     this.lives = 3;
@@ -45,6 +46,11 @@ function Player(){
         pop();*/
 
         push();
+            fill(255);
+
+            if(this.hasPowerup(7))
+              fill(0,255,0);
+
             translate(this.pos.x,this.pos.y);
             rotate(this.angle);
             beginShape();
@@ -64,8 +70,10 @@ function Player(){
                 if(this.invincible == false){
                   this.lives--;
                   this.invincible = true;
-                  setTimeout(this.removeIncibility,1000);
+                  setTimeout(this.removeInvincibility,1000);
+                }
                   if(asteroids[i].r > 10){
+                    if(!cheating) score += round(asteroids[i].r*5);
                     asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
                     asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
                     if(random(100) < 50)
@@ -73,7 +81,7 @@ function Player(){
                   }
                     asteroids.splice(i,1);
                   return;
-                }
+                //}
                 /*if(this.lives <=0){
                 }else{
                     this.pos.x = width/2;
@@ -84,7 +92,7 @@ function Player(){
         }
     }
 
-    this.removeIncibility = function(){
+    this.removeInvincibility = function(){
       this.invincible = false;
     }.bind(this);
 
@@ -103,6 +111,16 @@ function Player(){
                 setTimeout(this.removePowerup,8000,id); //Triple shot
             }else if(id == 6){
                 setTimeout(this.removePowerup,9000,id); //Freeze shot
+            }else if(id == 7){
+                this.invincible = true;
+                this.maxSpeed = 4;
+                if(this.speed < 0){
+                  this.speed = -this.maxSpeed;
+                }else if(this.speed > 0){
+                  this.speed = this.maxSpeed;
+                }
+                keyPressed();
+                setTimeout(this.removePowerup,12000,id);
             }else{
                 setTimeout(this.removePowerup,8000,id);
             }
@@ -110,12 +128,24 @@ function Player(){
     }
 
     this.removePowerup = function(id){
+
+      if(id == 7){
+        setTimeout(this.removeInvincibility,2000);
+        this.maxSpeed = 2;
+        if(this.speed < 0){
+          this.speed = -this.maxSpeed;
+        }else if(this.speed > 0){
+          this.speed = this.maxSpeed;
+        }
+      }
+
         for(var i = 0; i < this.effects.length; i++){
             if(this.effects[i] == id){
                 this.effects.splice(i,1);
                 return;
             }
         }
+
     }.bind(this);
 
     this.shoot = function(){
