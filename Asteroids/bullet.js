@@ -13,9 +13,13 @@ function Bullet(x,y,vel,effects){
     this.display = function(){
         push();
 
-        var effect = effects[effects.length-1];
-        if(effect == 7){
-          effect = effects[effects.length-2];
+        var effect = 0;
+        
+        for(var i = this.effects.length-1; i >= 0; i--){
+            if(this.effects[i] != 7 && this.effects[i] != 8){
+                effect = this.effects[i];
+                break;
+            }
         }
 
         if(effect == 1){
@@ -30,6 +34,8 @@ function Bullet(x,y,vel,effects){
             fill(200,100,100);
         }else if(effect == 6){
             fill(66, 173, 244);
+        }else if(effect == 8){
+            fill(219, 61, 179);
         }else{
             fill(255,0,0);
         }
