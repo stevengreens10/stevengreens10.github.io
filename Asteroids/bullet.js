@@ -12,9 +12,12 @@ function Bullet(x,y,vel,effects){
 
     this.display = function(){
         push();
-        
+
         var effect = effects[effects.length-1];
-        
+        if(effect == 7){
+          effect = effects[effects.length-2];
+        }
+
         if(effect == 1){
             fill(255,0,125);
         }else if(effect == 2){
@@ -51,15 +54,15 @@ function Bullet(x,y,vel,effects){
             }
         }
     }
-    
+
     this.hasEffect = function(id){
         for(var i = 0; i < this.effects.length; i++){
             if(this.effects[i] == id){
                 return true;
             }
         }
-        
+
         return false;
-        
+
     }
 }
