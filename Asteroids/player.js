@@ -50,6 +50,16 @@ function Player(){
 
             if(this.hasPowerup(7))
               fill(0,255,0);
+              
+            if(this.hasPowerup(8)){
+                push();
+                stroke(219, 61, 179);
+                strokeWeight(1.5);
+                noFill();
+                
+                ellipse(this.pos.x,this.pos.y,(this.r+11)*2,(this.r+11)*2);
+                pop();
+            }
 
             translate(this.pos.x,this.pos.y);
             rotate(this.angle);
@@ -69,8 +79,14 @@ function Player(){
             if(d < this.r + asteroids[i].r){
                 if(this.invincible == false){
                   this.lives--;
+                  background(255,0,0,200);
                   this.invincible = true;
                   setTimeout(this.removeInvincibility,1000);
+                }else{
+                    if(this.hasPowerup(8)){
+                        this.removePowerup(8);
+                        setTimeout(this.removeInvincibility,1000);
+                    }
                 }
                 
                 if(!cheating) score += round(asteroids[i].r*5);
@@ -99,21 +115,23 @@ function Player(){
     }.bind(this);
 
     this.applyPowerup = function(id){
+        
+        /*  1 - Continuum
+            2 - Double shot
+            3 - OP Mode
+            4 - Piercing
+            5 - Triple shot
+            6 - Freeze shot
+            7 - Invincibility + contact damage
+            8 - Bounce off asteroids
+        */
+        
+        
+        var durations = [0 /*0*/,10000 /*1*/,12000 /*2*/,4500 /*3*/,10000 /*4*/,8000 /*5*/,9000 /*6*/,12000 /*7*/,-1 /*8*/];
+    
         if(!this.hasPowerup(id)){
             this.effects.push(id);
-            if(id == 1)
-                setTimeout(this.removePowerup,10000,id); // Bullets loop through walls
-            if(id == 2){
-                setTimeout(this.removePowerup,12000,id); // Fire a bullet behind you
-            }else if(id == 3){
-                setTimeout(this.removePowerup,4500,id); // OP MODE
-            }else if(id == 4){
-                setTimeout(this.removePowerup,10000,id); // Penetrating shot
-            }else if(id == 5){
-                setTimeout(this.removePowerup,8000,id); //Triple shot
-            }else if(id == 6){
-                setTimeout(this.removePowerup,9000,id); //Freeze shot
-            }else if(id == 7){
+            if(id == 7){
                 this.invincible = true;
                 this.maxSpeed = 4;
                 if(this.speed < 0){
@@ -121,11 +139,12 @@ function Player(){
                 }else if(this.speed > 0){
                   this.speed = this.maxSpeed;
                 }
-                keyPressed();
-                setTimeout(this.removePowerup,12000,id);
-            }else{
-                setTimeout(this.removePowerup,8000,id);
-            }
+            }else if(id == 8){
+                 this.invincible = true;
+             }
+             
+            if(durations[id] != -1)
+                setTimeout(this.removePowerup,durations[id],id);
         }
     }
 
