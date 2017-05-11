@@ -58,7 +58,11 @@ function Asteroid(x,y,r){
                     }
                 }
 
-                if(!bullets[i].hasEffect(4)) bullets.splice(i,1);
+                if(!bullets[i].hasEffect(4)){
+                    bullets.splice(i,1);  
+                } 
+                
+                
 
                 return;
             }
