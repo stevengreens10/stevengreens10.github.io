@@ -111,7 +111,9 @@ function Player(){
     }
 
     this.removeInvincibility = function(){
-      this.invincible = false;
+        if(!this.hasPowerup(7) && !this.hasPowerup(8)){
+            this.invincible = false;
+        }
     }.bind(this);
 
     this.applyPowerup = function(id){
