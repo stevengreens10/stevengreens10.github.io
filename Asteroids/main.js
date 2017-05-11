@@ -22,7 +22,7 @@ var powerups = [];
 
 function setup(){
     var canvas = createCanvas(640,480);
-    canvas.parent("game");
+    canvas.parent("game"); 
 
     player = new Player();
 
