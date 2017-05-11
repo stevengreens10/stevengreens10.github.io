@@ -21,7 +21,8 @@ var cooldown = 0;
 var powerups = [];
 
 function setup(){
-    createCanvas(640,480);
+    var canvas = createCanvas(640,480);
+    canvas.parent("game");
 
     player = new Player();
 
