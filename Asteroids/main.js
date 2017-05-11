@@ -5,7 +5,7 @@ var MINSPAWN = 4000;
 var MAXROCKV = 2.4;
 var MINROCKV = 1.5;
 var freqArray;
-var powerupList = [1,2,3,4,5,6,7];
+var powerupList = [1,2,3,4,5,6,7,8];
 
 
 //Variables
