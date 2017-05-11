@@ -198,7 +198,8 @@ function keyPressed(){
           score = 0;
      }
     
-    return false;
+    if(key == 'W' || keyCode == UP_ARROW || key == 'S' || keyCode == DOWN_ARROW || key == 'A' || keyCode == LEFT_ARROW || key == 'D' || keyCode == RIGHT_ARROW || key == ' ')
+        return false;
 
 }
 
