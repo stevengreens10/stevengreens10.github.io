@@ -72,8 +72,10 @@ function Player(){
                   this.invincible = true;
                   setTimeout(this.removeInvincibility,1000);
                 }
+                
+                if(!cheating) score += round(asteroids[i].r*5);
+
                   if(asteroids[i].r > 10){
-                    if(!cheating) score += round(asteroids[i].r*5);
                     asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
                     asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
                     if(random(100) < 50)
