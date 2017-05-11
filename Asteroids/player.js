@@ -83,7 +83,7 @@ function Player(){
                   this.invincible = true;
                   setTimeout(this.removeInvincibility,1000);
                 }else{
-                    if(this.hasPowerup(8)){
+                    if(this.hasPowerup(8) && !this.hasPowerup(7)){
                         this.removePowerup(8);
                         setTimeout(this.removeInvincibility,1000);
                     }
