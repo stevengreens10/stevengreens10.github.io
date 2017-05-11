@@ -85,7 +85,7 @@ function draw(){
         player.update();
 
         if(shooting){
-           if(cooldown % 15 == 0 || cheating || player.hasPowerup(3)){
+           if((cooldown % 15 == 0 || cheating || player.hasPowerup(3)) && !player.hasPowerup(7)){
                player.shoot();
            }
         }
