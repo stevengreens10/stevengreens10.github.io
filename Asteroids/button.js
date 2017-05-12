@@ -1,7 +1,8 @@
-function Button(string,x,y,w,h){
+function Button(string,x,y,w,h,state){
   this.string = string;
   this.textSize = 12;
   this.bgColor = color(255,255,255);
+  this.state = state;
   this.hoverColor = color(200);
   this.textColor = color(0,0,0);
   this.hasStroke = false;
