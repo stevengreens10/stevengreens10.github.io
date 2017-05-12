@@ -1,9 +1,10 @@
 var grid = [];
 var scl = 40;
+var sudoku;
 
 function setup(){
     createCanvas(640,480);
-    var sudoku = loadTable("sudoku.csv");
+    sudoku = loadTable("sudoku.csv");
 
     for(var x = 0; x < 9; x++){
       for(var y = 0; y < 9; y++){
