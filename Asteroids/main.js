@@ -36,6 +36,8 @@ function setup(){
     buttons.push(new Button("Shop",width/2,250,250,30,0));
     buttons.push(new Button("Continue",width/2,200,250,30,2));
     buttons.push(new Button("Return to menu",width/2,250,250,30,2));
+    buttons.push(new Button("Return to menu",width/2,250,250,30,3));
+
 
 
 
@@ -195,7 +197,20 @@ function draw(){
         textSize(50);
         text("PAUSED",width/2,100);
         for(let b = 0; b < buttons.length; b++){
-          if(buttons[b].state == 2) buttons[b].update();
+          if(buttons[b].state == state) buttons[b].update();
+        }
+        
+        pop();
+           
+    }else if(state == 3){
+        push();
+        noFill();
+        stroke(255);
+        textAlign(CENTER);
+        textSize(50);
+        text("SHOP",width/2,100);
+        for(let b = 0; b < buttons.length; b++){
+          if(buttons[b].state == state) buttons[b].update();
         }
         
         pop();
@@ -231,7 +246,10 @@ function mousePressed(){
             state = 1;
         }else if(button.string == "Return to menu"){
             gameOver();
+        }else if(button.string == "Shop"){
+            state = 3;
         }
+        return;
       }
     }
 }
