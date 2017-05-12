@@ -1,82 +1,43 @@
-function Asteroid(x,y,r){
-    this.pos = createVector(x,y);
-    this.vel = p5.Vector.random2D();
-    this.frozen = false;
-    
-    var speed = map(r,30,10,MINROCKV,MAXROCKV);
-    this.vel.mult(speed);
+function Button(string,x,y,w,h,state){
+  this.string = string;
+  this.textSize = 12;
+  this.bgColor = color(255,255,255);
+  this.state = state;
+  this.hoverColor = color(200);
+  this.textColor = color(0,0,0);
+  this.hasStroke = false;
+  this.x = x;
+  this.y = y;
+  this.w = w;
+  this.h = h;
 
-    this.r = r;
-    this.dead = false;
+  this.update = function(){
 
-    this.update = function(){
-        if(this.frozen) this.vel.setMag(0.5);
-        this.pos.add(this.vel);
-        this.hit();
+    this.display();
+  }
 
-        if(this.pos.x > width + this.r){
-            this.pos.x = -this.r;
-        }else if(this.pos.x < -this.r){
-            this.pos.x = width+this.r;
-        }else if(this.pos.y > height + this.r){
-            this.pos.y = -this.r;
-        }else if(this.pos.y < -this.r){
-            this.pos.y = height + this.r;
-        }
+  this.display = function(){
+    push();
+      rectMode(CENTER);
+      fill(this.bgColor);
+      if(this.isHoveringOver()) fill(this.hoverColor);
+      if(!this.hasStroke) noStroke(); 
+      rect(this.x,this.y,this.w,this.h);
 
-        this.display();
+      textAlign(CENTER);
+      textSize(this.textSize);
+      fill(this.textColor);
+      text(this.string,this.x,this.y+(this.h/5));
+    pop();
+  }
+
+  this.isHoveringOver = function(){
+    if(mouseX > this.x - (this.w/2) && mouseX < this.x + this.w/2 && mouseY > this.y - (this.h/2) && mouseY < this.y + this.h/2){
+      return true;
+    }else{
+      return false;
     }
+  }
 
-    this.display = function(){
-        push();
-            fill(255,255,255,0);
-            stroke(255);
-            ellipse(this.pos.x,this.pos.y,2*this.r,2*this.r);
-        pop();
-    }
-
-    this.hit = function(){
-        for(let i = bullets.length - 1; i >= 0; i--){
-            var d = dist(this.pos.x,this.pos.y,bullets[i].pos.x,bullets[i].pos.y);
-
-            if(d < this.r + 5){
-                this.dead = true;
-                if(!cheating) score += round(this.r*5);
-                if(this.r > 10){
-                    var freeze = false;
-                    var babies = [];
-                    if(bullets[i].hasEffect(6)) freeze = true;
-
-                    babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
-                    babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
-                    if(random(100) < 50)
-                        babies.push(new Asteroid(this.pos.x,this.pos.y,this.r/2));
-                    
-                    for(let j = 0; j < babies.length; j++){
-                        if(freeze) babies[j].applyFreeze();
-                        asteroids.push(babies[j]);
-                    }
-                }
-
-                if(!bullets[i].hasEffect(4)){
-                    bullets.splice(i,1);  
-                } 
-                
-                
-
-                return;
-            }
-        }
-    }
-
-    this.applyFreeze = function(){
-        this.frozen = true;
-        setTimeout(this.unFreeze,1000);
-    }
-    
-    this.unFreeze = function(){
-      this.frozen = false;
-       this.vel.setMag(speed);
-    }.bind(this);
 
 }
