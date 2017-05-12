@@ -230,9 +230,9 @@ function keyPressed(){
             score = 0;
         }
     }if(key == 'R'){
-          reset();
-          player = new Player();
-          score = 0;
+          if(state == 1) reset();
+     }if(keyCode == 27){
+        if(state == 1) state = 0;
      }
 
     if(key == 'W' || keyCode == UP_ARROW || key == 'S' || keyCode == DOWN_ARROW || key == 'A' || keyCode == LEFT_ARROW || key == 'D' || keyCode == RIGHT_ARROW || key == ' ')
