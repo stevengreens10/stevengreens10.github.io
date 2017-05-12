@@ -15,5 +15,6 @@ function Cell(col,row,value){
     textAlign(CENTER);
     textSize(18);
     text(this.value,this.col*scl +(scl/2),this.row*scl + (scl/2));
+    pop();
   }
 }

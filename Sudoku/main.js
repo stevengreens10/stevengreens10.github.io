@@ -12,7 +12,7 @@ function setup(){
     for(var x = 0; x < 9; x++){
       for(var y = 0; y < 9; y++){
         var cell = new Cell(x,y,sudoku.rows[x].arr[y]);
-        if(sudoku.rows[x].arr[y] != "") cell.required = true;
+        if(sudoku.rows[x].arr[y] != " ") cell.required = true;
         grid[getIndex(x,y)] = cell;
       }
     }
