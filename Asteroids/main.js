@@ -19,19 +19,20 @@ var cheating = false;
 var cooldown = 0;
 
 var powerups = [];
+var buttons = [];
+
+var state = 0;
 
 function setup(){
     var canvas = createCanvas(640,480);
     canvas.parent("game");
+   freqArray = [];
+    for(var i = 0; i < powerupList.length; i++){
+        freqArray.push(powerupList[i]);
+    }
 
-    player = new Player();
-
-    reset();
-
-       freqArray = [];
-        for(var i = 0; i < powerupList.length; i++){
-            freqArray.push(powerupList[i]);
-        }
+    buttons.push(new Button("Start",width/2,200,250,30));
+    buttons.push(new Button("Shop",width/2,250,250,30));
 
 }
 
@@ -39,8 +40,15 @@ function reset(){
   asteroids = [];
   bullets = [];
   powerups = [];
-  player.effects = [];
+  score = 0;
+  player = new Player();
   spawnAsteroid();
+  state = 1;
+
+}
+
+function gameOver(){
+  state = 0;
 }
 
 function spawnAsteroid(){
@@ -81,7 +89,9 @@ function spawnAsteroid(){
 
 function draw(){
     background(51);
-    if(player.lives > 0){
+
+    if(state == 1){
+      ///if(player.lives > 0){
         player.update();
 
         if(shooting){
@@ -142,17 +152,29 @@ function draw(){
         text("Lives: " + player.lives,25,50);
 
 
-        //score++;
-    }else{
-        push();
-        textAlign(CENTER);
-        fill(255,0,0);
-        text("Game over.\nPress R to restart.",width/2,height/2);
-        pop();
-    }
-    text("Lives: " + player.lives,25,50);
-    text("Score: " + score,25,75);
+          //score++;
+      /*}else{
+          push();
+          textAlign(CENTER);
+          fill(255,0,0);
+          text("Game over.\nPress R to restart.",width/2,height/2);
+          pop();
+      }*/
+      text("Lives: " + player.lives,25,50);
+      text("Score: " + score,25,75);
+    }else if(state == 0){
+      push();
+      noFill();
+      stroke(255);
+      textAlign(CENTER);
+      textSize(50);
+      text("ASTEROIDS",width/2,100);
+      for(let b = 0; b < buttons.length; b++){
+        buttons[b].update();
+      }
 
+      pop();
+    }
 
 
 }
@@ -171,6 +193,21 @@ function spawnPowerup(id){
         powerups.push(new Powerup(random(width),random(height),id));
         setTimeout(despawn,10000,id);
     }
+}
+
+function mousePressed(){
+
+  if(state != 1){
+    for(var i = 0; i < buttons.length; i++){
+      var button = buttons[i];
+
+      if(button.isHoveringOver()){
+        if(button.string == "Start"){
+          reset();
+        }
+      }
+    }
+  }
 }
 
 function keyPressed(){
@@ -197,7 +234,7 @@ function keyPressed(){
           player = new Player();
           score = 0;
      }
-    
+
     if(key == 'W' || keyCode == UP_ARROW || key == 'S' || keyCode == DOWN_ARROW || key == 'A' || keyCode == LEFT_ARROW || key == 'D' || keyCode == RIGHT_ARROW || key == ' ')
         return false;
 

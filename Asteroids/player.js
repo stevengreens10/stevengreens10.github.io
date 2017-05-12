@@ -50,13 +50,13 @@ function Player(){
 
             if(this.hasPowerup(7))
               fill(0,255,0);
-              
+
             if(this.hasPowerup(8)){
                 push();
                 stroke(219, 61, 179);
                 strokeWeight(1.5);
                 noFill();
-                
+
                 ellipse(this.pos.x,this.pos.y,(this.r+11)*2,(this.r+11)*2);
                 pop();
             }
@@ -79,6 +79,9 @@ function Player(){
             if(d < this.r + asteroids[i].r){
                 if(this.invincible == false){
                   this.lives--;
+
+                  if(this.lives <= 0) gameOver();
+
                   background(255,0,0,200);
                   this.invincible = true;
                   setTimeout(this.removeInvincibility,1000);
@@ -88,7 +91,7 @@ function Player(){
                         setTimeout(this.removeInvincibility,1000);
                     }
                 }
-                
+
                 if(!cheating) score += round(asteroids[i].r*5);
 
                   if(asteroids[i].r > 10){
@@ -117,7 +120,7 @@ function Player(){
     }.bind(this);
 
     this.applyPowerup = function(id){
-        
+
         /*  1 - Continuum
             2 - Double shot
             3 - OP Mode
@@ -127,10 +130,10 @@ function Player(){
             7 - Invincibility + contact damage
             8 - Bounce off asteroids
         */
-        
-        
+
+
         var durations = [0 /*0*/,10000 /*1*/,12000 /*2*/,4500 /*3*/,10000 /*4*/,8000 /*5*/,9000 /*6*/,12000 /*7*/,-1 /*8*/];
-    
+
         if(!this.hasPowerup(id)){
             this.effects.push(id);
             if(id == 7){
@@ -144,7 +147,7 @@ function Player(){
             }else if(id == 8){
                  this.invincible = true;
              }
-             
+
             if(durations[id] != -1)
                 setTimeout(this.removePowerup,durations[id],id);
         }
