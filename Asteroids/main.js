@@ -182,7 +182,9 @@ function draw(){
       text("Lives: " + player.lives,25,50);
       text("Score: " + score,25,75);
 
-
+      if(document.hasFocus() == false){
+          state = 2;
+      }
     }else if(state == 0){ //MAIN MENU
       push();
       noFill();
