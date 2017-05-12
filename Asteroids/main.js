@@ -13,6 +13,7 @@ var asteroids;
 var bullets;
 var player;
 var score = 0;
+var high_score = 0;
 var timeout;
 var shooting = false;
 var cheating = false;
@@ -49,6 +50,7 @@ function reset(){
 
 function gameOver(){
   state = 0;
+  if(score > high_score) high_score = score;
 }
 
 function spawnAsteroid(){
@@ -162,7 +164,9 @@ function draw(){
       }*/
       text("Lives: " + player.lives,25,50);
       text("Score: " + score,25,75);
-    }else if(state == 0){
+
+
+    }else if(state == 0){ //MAIN MENU
       push();
       noFill();
       stroke(255);
@@ -172,6 +176,11 @@ function draw(){
       for(let b = 0; b < buttons.length; b++){
         buttons[b].update();
       }
+
+      textSize(25);
+      fill(255);
+      noStroke();
+      text("High score: " + high_score, width/2,450);
 
       pop();
     }
