@@ -32,8 +32,12 @@ function setup(){
         freqArray.push(powerupList[i]);
     }
 
-    buttons.push(new Button("Start",width/2,200,250,30));
-    buttons.push(new Button("Shop",width/2,250,250,30));
+    buttons.push(new Button("Start",width/2,200,250,30,0));
+    buttons.push(new Button("Shop",width/2,250,250,30,0));
+    buttons.push(new Button("Continue",width/2,200,250,30,2));
+    buttons.push(new Button("Return to menu",width/2,250,250,30,2));
+
+
 
 }
 
@@ -114,7 +118,7 @@ function draw(){
                 id = freqArray[floor(random(freqArray.length))];
               }
             }
-            if(!powerupExists(id) && !player.hasPowerup(id)) spawnPowerup(id);
+            if(!powerupExists(id) && !player.hasPowerup(id) && document.hasFocus()) spawnPowerup(id);
         }
 
         for(var p = powerups.length-1; p >= 0; p--){
@@ -174,7 +178,7 @@ function draw(){
       textSize(50);
       text("ASTEROIDS",width/2,100);
       for(let b = 0; b < buttons.length; b++){
-        buttons[b].update();
+        if(buttons[b].state == 0) buttons[b].update();
       }
 
       textSize(25);
@@ -183,6 +187,19 @@ function draw(){
       text("High score: " + high_score, width/2,450);
 
       pop();
+    }else if(state == 2){
+        push();
+        noFill();
+        stroke(255);
+        textAlign(CENTER);
+        textSize(50);
+        text("PAUSED",width/2,100);
+        for(let b = 0; b < buttons.length; b++){
+          if(buttons[b].state == 2) buttons[b].update();
+        }
+        
+        pop();
+           
     }
 
 
@@ -198,29 +215,29 @@ function despawn(id){
 }
 
 function spawnPowerup(id){
-    if(document.hasFocus()){
-        powerups.push(new Powerup(random(width),random(height),id));
-        setTimeout(despawn,10000,id);
-    }
+    powerups.push(new Powerup(random(width),random(height),id));
+    setTimeout(despawn,10000,id);
+    
 }
 
 function mousePressed(){
-
-  if(state != 1){
     for(var i = 0; i < buttons.length; i++){
       var button = buttons[i];
-
-      if(button.isHoveringOver()){
+    
+      if(button.isHoveringOver() && button.state == state){
         if(button.string == "Start"){
           reset();
+        }else if(button.string == "Continue"){
+            state = 1;
+        }else if(button.string == "Return to menu"){
+            gameOver();
         }
       }
     }
-  }
 }
 
 function keyPressed(){
-    if(player.lives > 0){
+    if(state == 1 && player.lives > 0){
         if(key == 'W' || keyCode == UP_ARROW){
             player.speed = -player.maxSpeed;
         }else if(key == 'S' || keyCode == DOWN_ARROW){
@@ -241,7 +258,7 @@ function keyPressed(){
     }if(key == 'R'){
           if(state == 1) reset();
      }if(keyCode == 27){
-        if(state == 1) state = 0;
+        if(state == 1) state = 2;
      }
 
     if(key == 'W' || keyCode == UP_ARROW || key == 'S' || keyCode == DOWN_ARROW || key == 'A' || keyCode == LEFT_ARROW || key == 'D' || keyCode == RIGHT_ARROW || key == ' ')
@@ -252,12 +269,14 @@ function keyPressed(){
 
 
 function keyReleased(){
-    if(key == 'W' || key == 'S' || keyCode == UP_ARROW || keyCode == DOWN_ARROW){
-        player.speed = 0;
-    }else if(key == 'A' || key == 'D' || keyCode == LEFT_ARROW || keyCode == RIGHT_ARROW){
-        player.angleV = 0;
-    }else if(key == ' '){
-        shooting = false;
+    if(state == 1){
+        if(key == 'W' || key == 'S' || keyCode == UP_ARROW || keyCode == DOWN_ARROW){
+            player.speed = 0;
+        }else if(key == 'A' || key == 'D' || keyCode == LEFT_ARROW || keyCode == RIGHT_ARROW){
+            player.angleV = 0;
+        }else if(key == ' '){
+            shooting = false;
+        }
     }
 }
 
