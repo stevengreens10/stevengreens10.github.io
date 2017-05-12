@@ -3,7 +3,7 @@ var scl = 40;
 var sudoku;
 
 function setup(){
-    createCanvas(640,480);
+    createCanvas(360,360);
     sudoku = loadTable("sudoku.csv");
 
     for(var x = 0; x < 9; x++){
