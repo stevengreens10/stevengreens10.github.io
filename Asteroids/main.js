@@ -276,7 +276,11 @@ function keyPressed(){
     }if(key == 'R'){
           if(state == 1) reset();
      }if(keyCode == 27){
-        if(state == 1) state = 2;
+        if(state == 1){
+            state = 2;
+        }else if(state == 2){
+            state = 1;
+        }
      }
 
     if(key == 'W' || keyCode == UP_ARROW || key == 'S' || keyCode == DOWN_ARROW || key == 'A' || keyCode == LEFT_ARROW || key == 'D' || keyCode == RIGHT_ARROW || key == ' ')
