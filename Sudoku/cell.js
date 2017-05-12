@@ -13,6 +13,7 @@ function Cell(col,row,value){
     rect(this.col * scl, this.row * scl, scl, scl);
     if(this.required) textStyle(BOLD);
     textAlign(CENTER);
+    textSize(18);
     text(this.value,this.col*scl +(scl/2),this.row*scl + (scl/2));
   }
 }
