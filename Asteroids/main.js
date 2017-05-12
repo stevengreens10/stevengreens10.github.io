@@ -31,6 +31,14 @@ function setup(){
     for(var i = 0; i < powerupList.length; i++){
         freqArray.push(powerupList[i]);
     }
+    
+    if(getCookie("highscore") == ""){
+        high_score = 0;
+    }else{
+        high_score = getCookie("highscore");
+    }
+    
+    document.cookie = "expires=Thu, 01 Jan 2018 00:00:00 UTC";
 
     buttons.push(new Button("Start",width/2,200,250,30,0));
     buttons.push(new Button("Shop",width/2,250,250,30,0));
@@ -56,7 +64,10 @@ function reset(){
 
 function gameOver(){
   state = 0;
-  if(score > high_score) high_score = score;
+  if(score > high_score){
+    high_score = score;
+    document.cookie = "highscore=" + high_score;
+  } 
 }
 
 function spawnAsteroid(){
@@ -310,4 +321,20 @@ function powerupExists(id){
     }
 
     return false;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
