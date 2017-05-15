@@ -34,10 +34,10 @@ function setup(){
     for(var i = 0; i < powerupList.length; i++){
         freqArray.push(powerupList[i]);
     }
-    
+
     loadData();
-    
-    
+
+
     document.cookie = "expires=Thu, 01 Jan 2018 00:00:00 UTC";
 
     buttons.push(new Button("Start",width/2,200,250,30,0));
@@ -66,7 +66,7 @@ function gameOver(){
   state = 0;
   if(score > high_score){
     high_score = score;
-  } 
+  }
 }
 
 function spawnAsteroid(){
@@ -205,9 +205,9 @@ function draw(){
         for(let b = 0; b < buttons.length; b++){
           if(buttons[b].state == state) buttons[b].update();
         }
-        
+
         pop();
-           
+
     }else if(state == 3){ // SHOP
         push();
         noFill();
@@ -222,9 +222,9 @@ function draw(){
         fill(255);
         noStroke();
         text("Money: $" + money, width-70,50);
-        
+
         pop();
-           
+
     }
 
 
@@ -244,13 +244,13 @@ function spawnPowerup(id){
         powerups.push(new Powerup(random(width),random(height),id));
         setTimeout(despawn,10000,id);
     }
-    
+
 }
 
 function mousePressed(){
     for(var i = 0; i < buttons.length; i++){
       var button = buttons[i];
-    
+
       if(button.isHoveringOver() && button.state == state){
         if(button.string == "Start"){
           reset();
@@ -347,7 +347,7 @@ function addScore(s){
     if(!cheating){
         score += s;
         coincounter += s;
-        
+
         if(coincounter >= 1000){
             addMoney(1);
             coincounter = 0;
@@ -370,11 +370,12 @@ function loadData(){
     }else{
         high_score = getCookie("highscore");
     }
-    
+
     if(getCookie("money") == ""){
         money = 0;
     }else{
         money = getCookie("money");
+        money = money/1;
     }
-    
+
 }
