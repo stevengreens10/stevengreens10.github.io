@@ -41,7 +41,7 @@ function Asteroid(x,y,r){
 
             if(d < this.r + 5){
                 this.dead = true;
-                if(!cheating) score += round(this.r*5);
+                addScore(round(this.r*5));
                 if(this.r > 10){
                     var freeze = false;
                     var babies = [];
