@@ -6,6 +6,7 @@ function Button(string,x,y,w,h,state){
   this.hoverColor = color(200);
   this.textColor = color(0,0,0);
   this.hasStroke = false;
+  this.disabled = false;
   this.x = x;
   this.y = y;
   this.w = w;
@@ -20,7 +21,7 @@ function Button(string,x,y,w,h,state){
     push();
       rectMode(CENTER);
       fill(this.bgColor);
-      if(this.isHoveringOver()) fill(this.hoverColor);
+      if(this.isHoveringOver() || this.disabled) fill(this.hoverColor);
       if(!this.hasStroke) noStroke(); 
       rect(this.x,this.y,this.w,this.h);
 
