@@ -459,6 +459,6 @@ function loadData(){
         money = getCookie("money");
     }
     
-    if(getCookie("tank")) ships[1] = true;
-    if(getCookie("scout")) ships[2] = true;
+    if(getCookie("tank") == "true") ships[1] = true;
+    if(getCookie("scout") == "true") ships[2] = true;
 }
