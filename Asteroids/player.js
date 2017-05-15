@@ -1,15 +1,18 @@
-function Player(){
+function Player(id){
     this.pos = createVector(width/2,height/2);
-    this.maxSpeed = 2;
     this.speed = 0;
     this.r = 5;
-    this.lives = 3;
     this.angle = 0;
     this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
     this.angleV = 0;
     this.powerup = 0;
     this.effects = [];
     this.invincible = false;
+    this.id = id;
+    
+    this.maxSpeed;//= 2;
+    this.lives;//= 3;
+    this.shootInterval;
     
     this.drift = false;
 
@@ -148,7 +151,7 @@ function Player(){
             this.effects.push(id);
             if(id == 7){
                 this.invincible = true;
-                this.maxSpeed = 4;
+                this.maxSpeed += 2;
                 if(this.speed < 0){
                   this.speed = -this.maxSpeed;
                 }else if(this.speed > 0){
@@ -167,7 +170,9 @@ function Player(){
 
       if(id == 7){
         setTimeout(this.removeInvincibility,2000);
-        this.maxSpeed = 2;
+        if(this.id == 0) this.maxSpeed = 2;
+        if(this.id == 1) this.maxSpeed = 1.4;
+        if(this.id == 2) this.maxSpeed = 3.5;
         if(this.speed < 0){
           this.speed = -this.maxSpeed;
         }else if(this.speed > 0){
@@ -192,7 +197,7 @@ function Player(){
         if(this.hasPowerup(2)){
             var bulletVel = this.direction.copy();
             bulletVel.setMag(8);
-            bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.effects));
+            bullets.push(new Bullet(this.pos.x,this.pos.y,bulletVel,this.effects.slice()));
         }if(this.hasPowerup(5)){
             var offset = PI/6;
             var v1 = createVector(this.direction.x * cos(offset) - (this.direction.y * sin(offset)), this.direction.x * sin(offset) + this.direction.y * cos(offset));
@@ -216,5 +221,20 @@ function Player(){
 
         return false;
 
+    }
+    
+    if(this.id == 0){
+        this.maxSpeed = 2;
+        this.lives = 3;
+        this.shootInterval = 15;
+    }else if(this.id == 1){
+        this.maxSpeed = 1.4;
+        this.lives = 4;
+        this.applyPowerup(8);
+        this.shootInterval = 15;
+    }else if(this.id == 2){
+        this.maxSpeed = 3.5;
+        this.lives = 2;
+        this.shootInterval = 12;
     }
 }
