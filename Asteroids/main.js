@@ -27,6 +27,8 @@ var state = 0;
 var money = 0;
 var coincounter = 0;
 
+var ships = [true,false,false,false];
+
 function setup(){
     var canvas = createCanvas(640,480);
     canvas.parent("game");
@@ -34,29 +36,99 @@ function setup(){
     for(var i = 0; i < powerupList.length; i++){
         freqArray.push(powerupList[i]);
     }
-
+    
     loadData();
-
-
-    document.cookie = "expires=Thu, 01 Jan 2018 00:00:00 UTC";
-
-    buttons.push(new Button("Start",width/2,200,250,30,0));
-    buttons.push(new Button("Shop",width/2,250,250,30,0));
-    buttons.push(new Button("Continue",width/2,200,250,30,2));
-    buttons.push(new Button("Return to menu",width/2,250,250,30,2));
-    buttons.push(new Button("Return to menu",width/2,250,250,30,3));
-
-
-
-
+    handleButtons();
 }
 
-function reset(){
+function handleButtons(){
+    
+    //MAIN MENU
+    makeButton(new Button("Start",width/2,200,250,30,0), function(){
+        state = 4;
+    });
+    makeButton(new Button("Shop",width/2,250,250,30,0), function(){
+        state = 3;
+    });
+    
+    //PAUSE SCREEN
+    makeButton(new Button("Continue",width/2,200,250,30,2), function(){
+        state = 1;
+    });
+    makeButton(new Button("Return to menu",width/2,250,250,30,2), function(){
+        gameOver();
+    });
+    
+    //SHOP
+    makeButton(new Button("Return to menu",width/2,300,250,30,3), function(){
+        state = 0;
+    });
+    makeButton(new Button("Buy Tank - $50", width/2, 200, 250, 30, 3), function(){
+        if(money >= 50){
+            money-=50;
+            ships[1] = true;
+            this.disabled = true;
+            getButtonByText("Tank").disabled = false;
+        }
+    });
+    
+    makeButton(new Button("Buy Scout - $100", width/2, 250, 250, 30, 3), function(){
+        if(money >= 100){
+            money-=100;
+            ships[2] = true;
+            this.disabled = true;
+            getButtonByText("Scout").disabled = false;
+        }
+    });
+    
+    
+    //SHIP SELECTION
+    makeButton(new Button("Normal", width/2-200, height/2, 100, 100, 4), function(){
+        reset(0);
+    }, function(){
+        this.textSize = 30;
+    });
+    
+    makeButton(new Button("Tank", width/2, height/2, 100, 100, 4), function(){
+        reset(1);
+    }, function(){
+        if(!ships[1]) this.disabled = true;
+        this.textSize = 30;
+    });
+    
+    makeButton(new Button("Scout", width/2+200, height/2, 100, 100, 4), function(){
+        reset(2);
+    }, function(){
+        if(!ships[2]) this.disabled = true;
+        this.textSize = 30;
+    });
+    
+    makeButton(new Button("Return to menu", width/2,height/2+100,250,30,4), function(){
+        state = 0;
+    })
+}
+
+function getButtonByText(s){
+    for(var i = 0; i < buttons.length; i++){
+        if(buttons[i].string == s) return buttons[i];
+    }
+}
+
+function makeButton(button, clickFunc, setupFunc){
+    button.click = clickFunc;
+    if(setupFunc){
+        button.setup = setupFunc;
+        button.setup();
+    }
+    buttons.push(button);
+}
+
+function reset(id){
   asteroids = [];
   bullets = [];
   powerups = [];
   score = 0;
-  player = new Player();
+  player = new Player(id);
   spawnAsteroid();
   state = 1;
 
@@ -66,7 +138,7 @@ function gameOver(){
   state = 0;
   if(score > high_score){
     high_score = score;
-  }
+  } 
 }
 
 function spawnAsteroid(){
@@ -115,7 +187,7 @@ function draw(){
         player.update();
 
         if(shooting){
-           if((cooldown % 15 == 0 || cheating || player.hasPowerup(3)) && !player.hasPowerup(7)){
+           if((cooldown % player.shootInterval == 0 || cheating || player.hasPowerup(3)) && !player.hasPowerup(7)){
                player.shoot();
            }
         }
@@ -205,9 +277,9 @@ function draw(){
         for(let b = 0; b < buttons.length; b++){
           if(buttons[b].state == state) buttons[b].update();
         }
-
+        
         pop();
-
+           
     }else if(state == 3){ // SHOP
         push();
         noFill();
@@ -222,17 +294,31 @@ function draw(){
         fill(255);
         noStroke();
         text("Money: $" + money, width-70,50);
-
+        
         pop();
-
+           
+    }else if(state == 4){ //SELECTION
+        push();
+        noFill();
+        stroke(255);
+        textAlign(CENTER);
+        textSize(50);
+        text("Select Ship",width/2,100);
+        for(let b = 0; b < buttons.length; b++){
+          if(buttons[b].state == state) buttons[b].update();
+        }
+        textSize(20);
+        fill(255);
+        
+        pop();   
     }
 
 
 }
 
-function despawn(id){
+function despawn(powerup){
     for(var i = 0; i < powerups.length; i++){
-        if(powerups[i].id == id){
+        if(powerups[i] == powerup){
             powerups.splice(i,1);
             return;
         }
@@ -240,27 +326,16 @@ function despawn(id){
 }
 
 function spawnPowerup(id){
-    if(state == 1){
-        powerups.push(new Powerup(random(width),random(height),id));
-        setTimeout(despawn,10000,id);
-    }
-
+    powerups.push(new Powerup(random(width),random(height),id));
+    setTimeout(despawn,10000,powerups[powerups.length-1]);
 }
 
 function mousePressed(){
     for(var i = 0; i < buttons.length; i++){
       var button = buttons[i];
-
-      if(button.isHoveringOver() && button.state == state){
-        if(button.string == "Start"){
-          reset();
-        }else if(button.string == "Continue"){
-            state = 1;
-        }else if(button.string == "Return to menu"){
-            gameOver();
-        }else if(button.string == "Shop"){
-            state = 3;
-        }
+    
+      if(button.isHoveringOver() && button.state == state && !button.disabled){
+        button.click();
         return;
       }
     }
@@ -281,7 +356,7 @@ function keyPressed(){
         }else if(key == ' '){
        //     if(cheating)
                 shooting = true;
-                cooldown = 15;
+                cooldown = player.shootInterval;
         }else if(keyCode == 191){
             cheating = !cheating;
             shooting = false;
@@ -347,7 +422,7 @@ function addScore(s){
     if(!cheating){
         score += s;
         coincounter += s;
-
+        
         if(coincounter >= 1000){
             addMoney(1);
             coincounter = 0;
@@ -362,6 +437,9 @@ function addMoney(m){
 function saveData(){
     document.cookie = "highscore=" + high_score;
     document.cookie = "money=" + money;
+    document.cookie = "tank="+ships[1];
+    document.cookie = "scout="+ships[2];
+    document.cookie = "expires=Thu, 01 Jan 2018 00:00:00 UTC";
 }
 
 function loadData(){
@@ -370,12 +448,13 @@ function loadData(){
     }else{
         high_score = getCookie("highscore");
     }
-
+    
     if(getCookie("money") == ""){
         money = 0;
     }else{
         money = getCookie("money");
-        money = money/1;
     }
-
+    
+    if(getCookie("tank")) ships[1] = true;
+    if(getCookie("scout")) ships[2] = true;
 }
