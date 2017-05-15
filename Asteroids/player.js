@@ -10,6 +10,8 @@ function Player(){
     this.powerup = 0;
     this.effects = [];
     this.invincible = false;
+    
+    this.drift = false;
 
     this.update = function(){
         this.direction = createVector(cos(this.angle + PI/2),sin(this.angle + PI/2));
@@ -17,6 +19,14 @@ function Player(){
 
 
         var vel = this.direction.copy();
+        
+        if(this.drift){
+            this.speed *= 0.97;
+            if(abs(this.speed) < 0.1){
+                this.drift = false;
+                this.speed = 0;
+            }
+        }
         vel.mult(this.speed);
 
         this.pos.add(vel);
@@ -92,7 +102,7 @@ function Player(){
                     }
                 }
 
-                if(!cheating) score += round(asteroids[i].r*5);
+                addScore(round(asteroids[i].r*5))
 
                   if(asteroids[i].r > 10){
                     asteroids.push(new Asteroid(asteroids[i].pos.x,asteroids[i].pos.y,asteroids[i].r/2));
@@ -121,14 +131,14 @@ function Player(){
 
     this.applyPowerup = function(id){
 
-        /*  1 - Continuum
+        /*  1 - Bullets loop through walls
             2 - Double shot
             3 - OP Mode
             4 - Piercing
             5 - Triple shot
             6 - Freeze shot
             7 - Invincibility + contact damage
-            8 - Bounce off asteroids
+            8 - Shield
         */
 
 
