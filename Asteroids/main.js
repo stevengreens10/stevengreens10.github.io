@@ -24,6 +24,9 @@ var buttons = [];
 
 var state = 0;
 
+var money = 0;
+var coincounter = 0;
+
 function setup(){
     var canvas = createCanvas(640,480);
     canvas.parent("game");
@@ -32,11 +35,8 @@ function setup(){
         freqArray.push(powerupList[i]);
     }
     
-    if(getCookie("highscore") == ""){
-        high_score = 0;
-    }else{
-        high_score = getCookie("highscore");
-    }
+    loadData();
+    
     
     document.cookie = "expires=Thu, 01 Jan 2018 00:00:00 UTC";
 
@@ -66,12 +66,11 @@ function gameOver(){
   state = 0;
   if(score > high_score){
     high_score = score;
-    document.cookie = "highscore=" + high_score;
   } 
 }
 
 function spawnAsteroid(){
-    if(document.hasFocus()){
+    if(document.hasFocus() && state == 1){
         var chance = floor(random(1,5));
         var x = 0;
         var y = 0;
@@ -89,14 +88,12 @@ function spawnAsteroid(){
             x = random(width);
         }
         var r;
-        if(random(100) < 88){
-            r = 30;
+        if(random(100) < 2){
+            r = 7.5;
+        }else if(random(100) < 10){
+            r = 15;
         }else{
-            if(random(100) < 10){
-                r = 15;
-            }else{
-                r = 7.5;
-            }
+            r = 30;
         }
         asteroids.push(new Asteroid(x,y,r));
     }
@@ -108,6 +105,10 @@ function spawnAsteroid(){
 
 function draw(){
     background(51);
+
+    if(frameCount % 300 == 0){
+        saveData();
+    }
 
     if(state == 1){
       ///if(player.lives > 0){
@@ -166,21 +167,13 @@ function draw(){
             }
         }
 
-        fill(255);
-        textSize(20);
-        text("Lives: " + player.lives,25,50);
+      fill(255);
+      textSize(20);
+      textAlign(CENTER);
+      text("Lives: " + player.lives,70,50);
+      text("Score: " + score,70,75);
+      text("Money: $" + money, width-70,50);
 
-
-          //score++;
-      /*}else{
-          push();
-          textAlign(CENTER);
-          fill(255,0,0);
-          text("Game over.\nPress R to restart.",width/2,height/2);
-          pop();
-      }*/
-      text("Lives: " + player.lives,25,50);
-      text("Score: " + score,25,75);
 
       if(document.hasFocus() == false){
           state = 2;
@@ -202,7 +195,7 @@ function draw(){
       text("High score: " + high_score, width/2,450);
 
       pop();
-    }else if(state == 2){
+    }else if(state == 2){ //PAUSE
         push();
         noFill();
         stroke(255);
@@ -215,7 +208,7 @@ function draw(){
         
         pop();
            
-    }else if(state == 3){
+    }else if(state == 3){ // SHOP
         push();
         noFill();
         stroke(255);
@@ -225,6 +218,10 @@ function draw(){
         for(let b = 0; b < buttons.length; b++){
           if(buttons[b].state == state) buttons[b].update();
         }
+        textSize(20);
+        fill(255);
+        noStroke();
+        text("Money: $" + money, width-70,50);
         
         pop();
            
@@ -243,8 +240,10 @@ function despawn(id){
 }
 
 function spawnPowerup(id){
-    powerups.push(new Powerup(random(width),random(height),id));
-    setTimeout(despawn,10000,id);
+    if(state == 1){
+        powerups.push(new Powerup(random(width),random(height),id));
+        setTimeout(despawn,10000,id);
+    }
     
 }
 
@@ -271,8 +270,10 @@ function keyPressed(){
     if(state == 1 && player.lives > 0){
         if(key == 'W' || keyCode == UP_ARROW){
             player.speed = -player.maxSpeed;
+            player.drift = false;
         }else if(key == 'S' || keyCode == DOWN_ARROW){
             player.speed = player.maxSpeed;
+            player.drift = false;
         }else if(key == 'A' || keyCode == LEFT_ARROW){
             player.angleV=-0.08;
         }else if(key == 'D' || keyCode == RIGHT_ARROW){
@@ -307,6 +308,7 @@ function keyReleased(){
     if(state == 1){
         if(key == 'W' || key == 'S' || keyCode == UP_ARROW || keyCode == DOWN_ARROW){
             player.speed = 0;
+            //player.drift = true;
         }else if(key == 'A' || key == 'D' || keyCode == LEFT_ARROW || keyCode == RIGHT_ARROW){
             player.angleV = 0;
         }else if(key == ' '){
@@ -339,4 +341,40 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+function addScore(s){
+    if(!cheating){
+        score += s;
+        coincounter += s;
+        
+        if(coincounter >= 1000){
+            addMoney(1);
+            coincounter = 0;
+        }
+    }
+}
+
+function addMoney(m){
+    money += m;
+}
+
+function saveData(){
+    document.cookie = "highscore=" + high_score;
+    document.cookie = "money=" + money;
+}
+
+function loadData(){
+    if(getCookie("highscore") == ""){
+        high_score = 0;
+    }else{
+        high_score = getCookie("highscore");
+    }
+    
+    if(getCookie("money") == ""){
+        money = 0;
+    }else{
+        money = getCookie("money");
+    }
+    
 }
