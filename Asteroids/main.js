@@ -70,6 +70,8 @@ function handleButtons(){
             this.disabled = true;
             getButtonByText("Tank").disabled = false;
         }
+    }, function(){
+        if(ships[1]) this.disabled = true;
     });
     
     makeButton(new Button("Buy Scout - $100", width/2, 250, 250, 30, 3), function(){
@@ -79,6 +81,8 @@ function handleButtons(){
             this.disabled = true;
             getButtonByText("Scout").disabled = false;
         }
+    }, function(){
+        if(ships[2]) this.disabled = true;
     });
     
     
