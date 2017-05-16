@@ -142,13 +142,13 @@ function makeButton(button, clickFunc, updateFunc){
 }
 
 function reset(id){
-  state = 1;
   asteroids = [];
   bullets = [];
   powerups = [];
   score = 0;
   coincounter = 0;
   player = new Player(id);
+  state = 1;
   spawnAsteroid();
 }
 
@@ -381,7 +381,7 @@ function keyPressed(){
             score = 0;
         }
     }if(key == 'R'){
-          if(state == 1) reset();
+          if(state == 1) reset(player.id);
      }if(keyCode == 27){
         if(state == 1){
             state = 2;
