@@ -17,7 +17,7 @@ function setup(){
     var canvas = createCanvas(windowWidth,windowHeight);
     canvas.position(0,0);
     
-    player1 = new Player();
+    player1 = new Player(1);
     
     gen();
     player1.start();
