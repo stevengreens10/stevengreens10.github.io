@@ -142,14 +142,14 @@ function makeButton(button, clickFunc, updateFunc){
 }
 
 function reset(id){
+  state = 1;
   asteroids = [];
   bullets = [];
   powerups = [];
   score = 0;
+  coincounter = 0;
   player = new Player(id);
   spawnAsteroid();
-  state = 1;
-
 }
 
 function gameOver(){
@@ -439,11 +439,15 @@ function getCookie(cname) {
 function addScore(s){
     if(!cheating){
         score += s;
+        var initial = 0;
+        if(coincounter + s >= 1000){
+            initial = (coincounter + s) - 1000;
+        }
         coincounter += s;
         
         if(coincounter >= 1000){
             addMoney(1);
-            coincounter = 0;
+            coincounter = initial;
         }
     }
 }
