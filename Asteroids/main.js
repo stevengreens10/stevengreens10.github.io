@@ -479,6 +479,10 @@ function loadData(){
 }
 
 function resetData(){
+    highscore = 0;
+    money = 0;
+    ships[1] = false;
+    ships[2] = false;
     document.cookie = "highscore=" + 0;
     document.cookie = "money=" + 0;
     document.cookie = "tank="+ false;
