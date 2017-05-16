@@ -483,7 +483,7 @@ function loadData(){
 }
 
 function resetData(){
-    highscore = 0;
+    high_score = 0;
     money = 0;
     ships[1] = false;
     ships[2] = false;
