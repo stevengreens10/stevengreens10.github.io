@@ -4,6 +4,7 @@ var MAXSPAWN = 8000;
 var MINSPAWN = 4000;
 var MAXROCKV = 2.4;
 var MINROCKV = 1.5;
+var MAXSCORE = 30000;
 var freqArray;
 var powerupList = [1,2,3,4,5,6,7,8];
 
@@ -26,6 +27,7 @@ var state = 0;
 
 var money = 0;
 var coincounter = 0;
+var difficulty = 1;
 
 var ships = [true,false,false,false];
 
@@ -136,9 +138,41 @@ function handleButtons(){
     
     //OPTIONS MENU
     makeButton(new Button("Reset Data",130,height-38,100,30,5), resetData);
-    makeButton(new Button("Return to menu", width/2,height/2+100,250,30,5), function(){
+    makeButton(new Button("Return to menu", width/2,height/2+125,250,30,5), function(){
         state = 0;
     });
+    
+    makeButton(new Button("Easy",width/2,200,250,30,5), function(){
+        difficulty = 0;
+    }, function(){
+        if(difficulty == 0){
+            this.disabled = true;  
+        }else{
+            this.disabled = false;
+        }
+        this.display();
+    });
+    makeButton(new Button("Medium",width/2,250,250,30,5), function(){
+        difficulty = 1;  
+    }, function(){
+        if(difficulty == 1){
+            this.disabled = true;  
+        }else{
+            this.disabled = false;
+        }
+        this.display();
+    });
+    makeButton(new Button("Hard", width/2, 300, 250, 30, 5), function(){
+        difficulty = 2; 
+    }, function(){
+        if(difficulty == 2){
+            this.disabled = true;  
+        }else{
+            this.disabled = false;
+        }
+        this.display();
+    });
+    
     
 }
 
@@ -160,6 +194,26 @@ function reset(id){
   player = new Player(id);
   state = 1;
   spawnAsteroid();
+  
+  if(difficulty == 0){
+      MAXSCORE = 40000;
+      MAXSPAWN = 9500;
+      MINSPAWN = 4400;
+      MAXROCKV = 2.2;
+      MINROCKV = 1.1;
+  }else if(difficulty == 1){
+      MAXSCORE = 30000;
+      MAXSPAWN = 8000;
+      MINSPAWN = 4000;
+      MAXROCKV = 2.4;
+      MINROCKV = 1.5;
+  }else{
+      MAXSCORE = 25000;
+      MAXSPAWN = 6500;
+      MINSPAWN = 3000;
+      MAXROCKV = 3.5;
+      MINROCKV = 2.1;
+  }
 }
 
 function gameOver(){
@@ -197,7 +251,7 @@ function spawnAsteroid(){
         }
         asteroids.push(new Asteroid(x,y,r));
     }
-    var time = map(score,0,30000,MAXSPAWN,MINSPAWN);
+    var time = map(score,0,MAXSCORE,MAXSPAWN,MINSPAWN);
     if(time < MINSPAWN) time = MINSPAWN;
     if(timeout) clearTimeout(timeout);
     timeout = setTimeout(spawnAsteroid,time);
@@ -419,8 +473,6 @@ function keyPressed(){
 
 }
 
-
-
 function keyReleased(){
     if(state == 1){
         if(key == 'W' || key == 'S' || keyCode == UP_ARROW || keyCode == DOWN_ARROW){
@@ -461,15 +513,27 @@ function getCookie(cname) {
 }
 
 function addScore(s){
+    
+    var mult = 1;
+    
+    if(difficulty == 0){
+        mult = (2/3);
+    }else if(difficulty == 2){
+        mult = 3;
+    }
+    
+    var maximum = round(1000 / mult);
+    
+    s*=mult;
     if(!cheating){
-        score += s;
+        score += round(s);
         var initial = 0;
-        if(coincounter + s >= 1000){
-            initial = (coincounter + s) - 1000;
+        if(coincounter + s >= maximum){
+            initial = (coincounter + s) - maximum;
         }
         coincounter += s;
         
-        if(coincounter >= 1000){
+        if(coincounter >= maximum){
             addMoney(1);
             coincounter = initial;
         }
@@ -478,6 +542,7 @@ function addScore(s){
 
 function addMoney(m){
     money += m;
+    money = round(money);
 }
 
 function saveData(){
