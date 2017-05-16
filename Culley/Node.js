@@ -6,6 +6,8 @@ function Node(x,y,state){
     this.horizLine = random(100) < 90;
     this.verticLine = random(100) < 90;
     
+    this.owners = [];
+    
     var pixelX;
     var pixelY;
     
@@ -38,7 +40,13 @@ function Node(x,y,state){
     }
     
     this.stream = function(){
-        stroke(255,0,0);
+        if(hasOwner(1)){
+            stroke(255,0,0);
+        if(hasOwner(2)){
+            stroke(0,0,255);
+        }if(hasOwner(1) && hasOwner(2)){
+            stroke(100,0,100);   
+        }
         strokeCap(ROUND);
         strokeWeight(10.0);
         
@@ -76,4 +84,12 @@ function Node(x,y,state){
         
             return connected;
     }
+    
+    function hasOwner(number){
+        var hasOwner = false;
+        for(var i = 0; i < owners.length; i++){
+            if(owners[i] == number) hasOwner = true;
+        }
+        
+        return hasOwner;
 }
