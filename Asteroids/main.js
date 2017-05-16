@@ -50,7 +50,9 @@ function handleButtons(){
     makeButton(new Button("Shop",width/2,250,250,30,0), function(){
         state = 3;
     });
-    makeButton(new Button("Reset Data",130,height-38,100,30,0), resetData);
+    makeButton(new Button("Options", width/2, 300, 250, 30, 0), function(){
+       state = 5; 
+    });
     
     //PAUSE SCREEN
     makeButton(new Button("Continue",width/2,200,250,30,2), function(){
@@ -129,7 +131,15 @@ function handleButtons(){
     
     makeButton(new Button("Return to menu", width/2,height/2+100,250,30,4), function(){
         state = 0;
-    })
+    });
+    
+    
+    //OPTIONS MENU
+    makeButton(new Button("Reset Data",130,height-38,100,30,5), resetData);
+    makeButton(new Button("Return to menu", width/2,height/2+100,250,30,5), function(){
+        state = 0;
+    });
+    
 }
 
 function makeButton(button, clickFunc, updateFunc){
@@ -322,6 +332,20 @@ function draw(){
         textAlign(CENTER);
         textSize(50);
         text("Select Ship",width/2,100);
+        for(let b = 0; b < buttons.length; b++){
+          if(buttons[b].state == state) buttons[b].update();
+        }
+        textSize(20);
+        fill(255);
+        
+        pop();   
+    }else if(state == 5){
+        push();
+        noFill();
+        stroke(255);
+        textAlign(CENTER);
+        textSize(50);
+        text("OPTIONS",width/2,100);
         for(let b = 0; b < buttons.length; b++){
           if(buttons[b].state == state) buttons[b].update();
         }
