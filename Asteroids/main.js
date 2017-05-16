@@ -50,6 +50,7 @@ function handleButtons(){
     makeButton(new Button("Shop",width/2,250,250,30,0), function(){
         state = 3;
     });
+    makeButton(new Button("Reset Data",130,height-38,100,30,0), resetData);
     
     //PAUSE SCREEN
     makeButton(new Button("Continue",width/2,200,250,30,2), function(){
@@ -475,4 +476,11 @@ function loadData(){
     
     if(getCookie("tank") == "true") ships[1] = true;
     if(getCookie("scout") == "true") ships[2] = true;
+}
+
+function resetData(){
+    document.cookie = "highscore=" + 0;
+    document.cookie = "money=" + 0;
+    document.cookie = "tank="+ false;
+    document.cookie = "scout="+false;
 }
