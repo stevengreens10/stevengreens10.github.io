@@ -519,7 +519,7 @@ function addScore(s){
     if(difficulty == 0){
         mult = (2/3);
     }else if(difficulty == 2){
-        mult = 3;
+        mult = 2;
     }
     
     var maximum = round(1000 / mult);
