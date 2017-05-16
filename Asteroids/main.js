@@ -68,10 +68,14 @@ function handleButtons(){
             money-=50;
             ships[1] = true;
             this.disabled = true;
-            getButtonByText("Tank").disabled = false;
         }
     }, function(){
-        if(ships[1]) this.disabled = true;
+        if(ships[1]){
+            this.disabled = true;
+        }else{
+            this.disabled = false;
+        }
+        this.display();
     });
     
     makeButton(new Button("Buy Scout - $100", width/2, 250, 250, 30, 3), function(){
@@ -79,10 +83,14 @@ function handleButtons(){
             money-=100;
             ships[2] = true;
             this.disabled = true;
-            getButtonByText("Scout").disabled = false;
         }
     }, function(){
-        if(ships[2]) this.disabled = true;
+        if(ships[2]){
+          this.disabled = true;  
+        }else{
+            this.disabled = false;
+        }
+        this.display();
     });
     
     
@@ -91,20 +99,31 @@ function handleButtons(){
         reset(0);
     }, function(){
         this.textSize = 30;
+        this.display();
     });
     
     makeButton(new Button("Tank", width/2, height/2, 100, 100, 4), function(){
         reset(1);
     }, function(){
-        if(!ships[1]) this.disabled = true;
+        if(!ships[1]){
+            this.disabled = true;
+        }else{
+            this.disabled = false;
+        }
         this.textSize = 30;
+        this.display();
     });
     
     makeButton(new Button("Scout", width/2+200, height/2, 100, 100, 4), function(){
         reset(2);
     }, function(){
-        if(!ships[2]) this.disabled = true;
+        if(!ships[2]){ 
+            this.disabled = true;
+        }else{
+            this.disabled = false;
+        }
         this.textSize = 30;
+        this.display();
     });
     
     makeButton(new Button("Return to menu", width/2,height/2+100,250,30,4), function(){
@@ -112,17 +131,11 @@ function handleButtons(){
     })
 }
 
-function getButtonByText(s){
-    for(var i = 0; i < buttons.length; i++){
-        if(buttons[i].string == s) return buttons[i];
-    }
-}
-
-function makeButton(button, clickFunc, setupFunc){
+function makeButton(button, clickFunc, updateFunc){
     button.click = clickFunc;
-    if(setupFunc){
-        button.setup = setupFunc;
-        button.setup();
+    if(updateFunc){
+        button.update = updateFunc;
+        button.update();
     }
     buttons.push(button);
 }
