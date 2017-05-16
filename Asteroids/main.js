@@ -470,6 +470,7 @@ function loadData(){
         money = 0;
     }else{
         money = getCookie("money");
+        money/=1;
     }
     
     if(getCookie("tank") == "true") ships[1] = true;
