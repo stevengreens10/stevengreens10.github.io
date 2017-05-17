@@ -49,7 +49,7 @@ function grid(){
 function gen(){
     for(var y = 0; y < col; y++){
         for(var x = 0; x < row; x++){
-            nodes[getIndex(x,y)] = new Node(x,y);
+            nodes[getIndex(x,y)] = new Node(x,y,0);
             //nodes[getIndex(x,y)].state = 1;
         }
     }
