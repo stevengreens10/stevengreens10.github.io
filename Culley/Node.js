@@ -88,3 +88,4 @@ function Node(x,y,state){
     
         return owner;
     }
+}
