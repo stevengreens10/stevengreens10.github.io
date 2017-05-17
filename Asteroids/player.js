@@ -155,7 +155,6 @@ function Player(id){
             }
         }
         
-        print(durations);
         if(!this.hasPowerup(id)){
             this.effects.push(id);
             if(id == 7){
