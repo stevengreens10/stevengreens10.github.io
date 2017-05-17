@@ -61,27 +61,23 @@ function Node(x,y,state){
         }
     }
     
-    this.connectedTo = function(){
+    this.connectedTo = function(player){
         var connected = false;
         
-        if(nodes[getIndex(this.x-1,this.y)] && nodes[getIndex(this.x-1,this.y)].state == 1 && nodes[getIndex(this.x-1,this.y)].horizLine){
-            print("Left");
-          connected = true;  
-        } 
-        if(nodes[getIndex(this.x+1,this.y)] && nodes[getIndex(this.x+1,this.y)].state == 1 && this.horizLine){
-            print("Right");
-          connected = true;  
-        } 
-        if(nodes[getIndex(this.x,this.y-1)] && nodes[getIndex(this.x,this.y-1)].state == 1 && nodes[getIndex(this.x,this.y-1)].verticLine){
-            print("Up");
-            connected = true;
-        }
-        if(nodes[getIndex(this.x-1,this.y+1)] && nodes[getIndex(this.x,this.y+1)].state == 1 && this.verticLine){
-            print("Down");
-            connected = true;
-        } 
-        
+            if(nodes[getIndex(this.x-1,this.y)] && nodes[getIndex(this.x-1,this.y)].hasOwner(player) && nodes[getIndex(this.x-1,this.y)].state == 1 && nodes[getIndex(this.x-1,this.y)].horizLine){
+              connected = true;  
+            } 
+            if(nodes[getIndex(this.x+1,this.y)] && nodes[getIndex(this.x+1,this.y)].hasOwner(player) && nodes[getIndex(this.x+1,this.y)].state == 1 && this.horizLine){
+              connected = true;  
+            } 
+            if(nodes[getIndex(this.x,this.y-1)] && nodes[getIndex(this.x,this.y-1)].hasOwner(player) && nodes[getIndex(this.x,this.y-1)].state == 1 && nodes[getIndex(this.x,this.y-1)].verticLine){
+                connected = true;
+            }
+            if(nodes[getIndex(this.x,this.y+1)] && nodes[getIndex(this.x,this.y+1)].hasOwner(player) && nodes[getIndex(this.x,this.y+1)].state == 1 && this.verticLine){
+                connected = true;
+            } 
             return connected;
+        
     }
     
     this.hasOwner = function(number){
@@ -92,4 +88,3 @@ function Node(x,y,state){
     
         return owner;
     }
-}
