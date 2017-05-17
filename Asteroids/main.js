@@ -28,6 +28,7 @@ var state = 0;
 var money = 0;
 var coincounter = 0;
 var difficulty = 1;
+var incDuration = false;
 
 var ships = [true,false,false,false];
 
@@ -65,9 +66,6 @@ function handleButtons(){
     });
     
     //SHOP
-    makeButton(new Button("Return to menu",width/2,300,250,30,3), function(){
-        state = 0;
-    });
     makeButton(new Button("Buy Tank - $50", width/2, 200, 250, 30, 3), function(){
         if(money >= 50){
             money-=50;
@@ -96,6 +94,27 @@ function handleButtons(){
             this.disabled = false;
         }
         this.display();
+    });
+    
+    makeButton(new Button("Powerup duration increase - $75", width/2, 300, 250, 30, 3), function(){
+        if(money >= 75){
+            money-=75;
+            this.disabled = true;
+            incDuration = true;
+            
+        }
+    }, function(){
+        if(incDuration){
+            this.disabled = true;
+        }else{
+            this.disabled = false;
+        }
+        
+        this.display();
+    });
+    
+    makeButton(new Button("Return to menu",width/2,350,250,30,3), function(){
+        state = 0;
     });
     
     
@@ -186,6 +205,7 @@ function makeButton(button, clickFunc, updateFunc){
 }
 
 function reset(id){
+  if(key == 'R') incDuration = false;
   asteroids = [];
   bullets = [];
   powerups = [];
@@ -221,6 +241,8 @@ function gameOver(){
   if(score > high_score){
     high_score = score;
   } 
+  
+  incDuration = false;
 }
 
 function spawnAsteroid(){
