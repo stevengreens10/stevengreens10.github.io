@@ -2,8 +2,8 @@ function Node(x,y,state){
     this.state = state;
     this.x = x;
     this.y = y;
-    this.horizLine = random(100) < 60;
-    this.verticLine = random(100) < 60;
+    this.horizLine = random(100) < 80;
+    this.verticLine = random(100) < 80;
     
     this.owners = [];
     
