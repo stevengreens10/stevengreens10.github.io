@@ -61,6 +61,7 @@ function Node(x,y,state){
             line(pixelX, pixelY, pixelX, pixelY + scl);
         }
     }
+    }
     
     this.connectedTo = function(){
         var connected = false;
