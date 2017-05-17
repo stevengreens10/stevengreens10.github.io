@@ -12,15 +12,18 @@ var index;
 var current;
 
 var player1;
+var player2;
 
 function setup(){
     var canvas = createCanvas(windowWidth,windowHeight);
     canvas.position(0,0);
     
     player1 = new Player(1);
+    player2 = new Player(2);
     
     gen();
     player1.start();
+    player2.start();
 }
 
 function draw(){
@@ -73,7 +76,7 @@ function windowResized(){
 }
 
 function mousePressed(){
-    if(current.connectedTo()){
+    if(current.connectedTo(2)){
         current.state = 1;
         current.owners.push(2);
     }
@@ -81,7 +84,7 @@ function mousePressed(){
 
 function keyPressed(){
     if(key == " "){
-        if(current.connectedTo()){
+        if(current.connectedTo(1)){
             current.state = 1;
             current.owners.push(1);
         }
