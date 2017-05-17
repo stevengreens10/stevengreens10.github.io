@@ -1,4 +1,3 @@
-
 function Node(x,y,state){
     this.state = state;
     this.x = x;
@@ -40,11 +39,11 @@ function Node(x,y,state){
     }
     
     this.stream = function(){
-        if(hasOwner(1)){
+        if(this.hasOwner(1)){
             stroke(255,0,0);
-        if(hasOwner(2)){
+        }if(this.hasOwner(2)){
             stroke(0,0,255);
-        }if(hasOwner(1) && hasOwner(2)){
+        }if(this.hasOwner(1) && this.hasOwner(2)){
             stroke(100,0,100);   
         }
         strokeCap(ROUND);
@@ -60,7 +59,6 @@ function Node(x,y,state){
         if(this.y < row - 1 && this.state == 1 && nodes[index+col].state == 1 && this.verticLine){
             line(pixelX, pixelY, pixelX, pixelY + scl);
         }
-    }
     }
     
     this.connectedTo = function(){
@@ -86,12 +84,12 @@ function Node(x,y,state){
             return connected;
     }
     
-    function hasOwner(number){
-        var hasOwner = false;
-        for(var i = 0; i < owners.length; i++){
-            if(owners[i] == number) hasOwner = true;
+    this.hasOwner = function(number){
+        var owner = false;
+        for(var i = 0; i < this.owners.length; i++){
+            if(this.owners[i] == number) owner = true;
         }
-        
-        return hasOwner;
+    
+        return owner;
     }
 }
