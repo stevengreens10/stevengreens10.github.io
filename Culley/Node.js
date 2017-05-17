@@ -92,4 +92,5 @@ function Node(x,y,state){
         }
         
         return hasOwner;
+    }
 }
