@@ -73,11 +73,17 @@ function windowResized(){
 }
 
 function mousePressed(){
-    if(current.connectedTo()) current.state = 1;
+    if(current.connectedTo()){
+        current.state = 1;
+        current.owners.push(2);
+    }
 }
 
 function keyPressed(){
     if(key == " "){
-        if(current.connectedTo()) current.state = 1;
+        if(current.connectedTo()){
+            current.state = 1;
+            current.owners.push(1);
+        }
     }
 }
