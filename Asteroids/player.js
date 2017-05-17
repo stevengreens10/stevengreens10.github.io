@@ -147,6 +147,15 @@ function Player(id){
 
         var durations = [0 /*0*/,10000 /*1*/,12000 /*2*/,4500 /*3*/,10000 /*4*/,8000 /*5*/,9000 /*6*/,12000 /*7*/,-1 /*8*/];
 
+        if(incDuration){
+            for(var i = 0; i < durations.length; i++){
+                if(durations[i] > 0){
+                    durations[i] += 1500;
+                }
+            }
+        }
+        
+        print(durations);
         if(!this.hasPowerup(id)){
             this.effects.push(id);
             if(id == 7){
@@ -170,8 +179,8 @@ function Player(id){
 
       if(id == 7){
         setTimeout(this.removeInvincibility,2000);
-        if(this.id == 0) this.maxSpeed = 2;
-        if(this.id == 1) this.maxSpeed = 1.4;
+        if(this.id == 0) this.maxSpeed = 2.1;
+        if(this.id == 1) this.maxSpeed = 1.7;
         if(this.id == 2) this.maxSpeed = 3.5;
         if(this.speed < 0){
           this.speed = -this.maxSpeed;
@@ -224,11 +233,11 @@ function Player(id){
     }
     
     if(this.id == 0){
-        this.maxSpeed = 2;
+        this.maxSpeed = 2.1;
         this.lives = 3;
         this.shootInterval = 15;
     }else if(this.id == 1){
-        this.maxSpeed = 1.4;
+        this.maxSpeed = 1.7;
         this.lives = 4;
         this.applyPowerup(8);
         this.shootInterval = 15;
