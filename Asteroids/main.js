@@ -286,6 +286,10 @@ function draw(){
         saveData();
     }
 
+
+    if(state != 1){
+        shooting = false;
+    }
     if(state == 1){
       ///if(player.lives > 0){
         player.update();
