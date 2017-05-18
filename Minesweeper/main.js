@@ -184,16 +184,10 @@ function removeUnflagged(x,y){
 
 function checkNeighbors(x,y){
   var cell = cells[getIndex(x,y)];
-  print("(" + x + ", " + y + ")");
   if(cell && x < cols && x >= 0 && y < rows && y >= 0){
     if((getAlive(x,y) == 0) && (cell.state != 1 && cell.state != 2 && !cell.flagged)){
       cycles++;
       cell.state = 2;
-      /*checkNeighbors(x-1,y);
-      checkNeighbors(x+1,y);
-      checkNeighbors(x,y+1);
-      checkNeighbors(x,y-1);*/
-
       for(var i = x-1; i < x+2; i++){
         for(var j = y-1; j < y + 2; j++){
           var cell = cells[getIndex(i,j)];
