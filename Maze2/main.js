@@ -1,8 +1,9 @@
-const scl = 20;
+const scl = 40;
 var cols, rows;
 
 var grid = [];
 var player;
+var state =0;
 
 var cheating = false;
 function setup(){
@@ -14,6 +15,7 @@ function setup(){
 
 function reset(){
     generate();
+    state = 0;
 }
 
 function keyPressed(){
@@ -28,6 +30,10 @@ function keyPressed(){
     }else if(key == 'S' || keyCode == DOWN_ARROW){
          var box = grid[getIndex(player.col, player.row+1)];
          if(box && !player.bottom) player = box;
+         
+         if(player == grid[grid.length-1]){
+             state = 1;
+         }
     }else if(key == 'D' || keyCode == RIGHT_ARROW){
          var box = grid[getIndex(player.col+1, player.row)];
          if(box && !player.right) player = box;
@@ -38,7 +44,19 @@ function keyPressed(){
 
 function draw(){
     background(51);
-    drawGrid();
+    if(state == 0){
+        drawGrid();
+    }else{
+        push();
+        textAlign(CENTER);
+        textSize(50);
+        fill(255);
+        noStroke();
+        text("Congratulations",width/2,height/2);
+        text("R to reset", width/2, height/2 + 50);
+        pop();
+
+    }
 }
 
 function generate(){
