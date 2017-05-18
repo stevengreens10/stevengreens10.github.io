@@ -68,6 +68,7 @@ function draw(){
             player.yVel=0;
             player.xVel=2;
             player.y = rotating.y+rotating.hr+player.r;
+            player.x = rotating.x + rotating.wr;
             player.wall = "bottom";
         }
         
