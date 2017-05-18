@@ -15,7 +15,7 @@ function Cell(state,x,y){
             fill(100, 153, 239);
         }else if(this.state == 2){
             fill(180, 206, 247);
-        }else if(this.state == 3){
+        }if(this.state == 3 || (dead && this.state == 1)){
             fill(255,0,0);
             dead = true;
         }
