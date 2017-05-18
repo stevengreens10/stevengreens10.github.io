@@ -64,10 +64,10 @@ function draw(){
             player.y = rotating.y - rotating.hr;
             player.wall = "left";
            console.log("left");
-        }else if(player.y >= rotating.y+rotating.hr && != "bottom"){
+        }else if(player.y >= rotating.y+rotating.hr && player.wall != "bottom"){
             player.yVel=0;
             player.xVel=2;
-            player.y = 
+            player.y = rotating.y+rotating.hr+player.r;
             player.wall = "bottom";
         }
         
