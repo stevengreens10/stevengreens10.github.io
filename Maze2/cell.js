@@ -9,6 +9,7 @@ function Cell(x,y){ // Constructor for cell object
     this.right = true;
     //Cell should only be visited once
     this.visited = false;
+    this.inPath = false;
 
     this.display = function(){
         var x = this.col * scl;
@@ -28,7 +29,7 @@ function Cell(x,y){ // Constructor for cell object
             if(inStack) fill(200,200,0);
             if(this == end) fill(255,0,0);*/
             
-            if(this == player) fill(0,255,0);
+            if(this == player && state == 0) fill(0,255,0);
             
             rect(x,y,scl,scl);
         pop();
@@ -43,6 +44,35 @@ function Cell(x,y){ // Constructor for cell object
         if(this.bottom) line(x+scl,y+scl,x,y+scl);
         //Bottom left to top left
         if(this.left) line(x,y+scl,x,y);
+        
+        var mx = x + scl/2;
+        var my = y + scl/2;
+        
+        if(this.inPath && state == 1){
+            stroke(0,255,0);
+            var box = grid[getIndex(this.col, this.row-1)]; //ABOVE
+            if(box && box.inPath && !this.top){
+                line(mx,my,(box.col * scl) + scl/2, (box.row * scl) + scl/2);
+            }
+            box = grid[getIndex(this.col, this.row+1)]; //BELOW
+            if(box && box.inPath && !this.bottom){
+                line(mx,my,(box.col * scl) + scl/2, (box.row * scl) + scl/2);
+            }
+            box = grid[getIndex(this.col-1, this.row)]; //LEFT
+            if(box && box.inPath && !this.left){
+                line(mx,my,(box.col * scl) + scl/2, (box.row * scl) + scl/2);
+            }
+            box = grid[getIndex(this.col+1, this.row)]; //RIGHT
+            if(box && box.inPath && !this.right){
+                line(mx,my,(box.col * scl) + scl/2, (box.row * scl) + scl/2);
+            }
+            
+            if(this == grid[0]){
+                line(mx,my,mx,0);
+            }else if(this == grid[grid.length-1]){
+                line(mx,my,mx,height);
+            }
+        }
         
       
     }
