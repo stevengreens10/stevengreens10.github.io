@@ -1,4 +1,4 @@
-const scl = 40;
+const scl = 20;
 var cols, rows;
 
 var grid = [];
