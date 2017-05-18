@@ -12,9 +12,9 @@ function setup(){
     scl = 25;
 
     createCanvas(cols*scl+1,rows*scl+1);
- 
+
     generate();
-    
+
 }
 
 function draw(){
@@ -55,19 +55,21 @@ function generate(){
                 state = 1;
             }
             cells[index] = new Cell(state,x,y);
-        }   
+        }
     }
 }
 
 function mousePressed(){
-    
-    
+
+
     if(!dead){
         if(mouseX >0 && mouseX < width && mouseY < height && mouseY > 0){
             var x = int(mouseX/scl);
             var y = int(mouseY/scl);
             var index = x + y * cols;
-            
+
+            checkNeighbors(x,y);
+
             if(cells[index].flagged == false){
                 if(cells[index].state == 0){
                     cells[index].state = 2;
@@ -78,36 +80,37 @@ function mousePressed(){
                         removeUnflagged(x,y);
                     }
                 }
-                
+
                 if(clicks == 0){
-                    cells[(x-1)+y*cols].state = 2;
-                    cells[(x+1)+y*cols].state = 2;
-                    cells[(x)+(y+1)*cols].state = 2;
-                    cells[(x+1)+(y+1)*cols].state = 2;
-                    cells[(x+1)+(y-1)*cols].state = 2;
-                    cells[(x-1)+(y+1)*cols].state = 2;
-                    cells[(x-1)+(y-1)*cols].state = 2;
-                    cells[(x)+(y-1)*cols].state = 2;
-                    cells[(x)+(y)*cols].state = 2;
-                    
-                    cells[(x-1)+y*cols].flagged = false;
-                    cells[(x+1)+y*cols].flagged = false;
-                    cells[(x)+(y+1)*cols].flagged = false;
-                    cells[(x+1)+(y+1)*cols].flagged = false;
-                    cells[(x+1)+(y-1)*cols].flagged = false;
-                    cells[(x-1)+(y+1)*cols].flagged = false;
-                    cells[(x-1)+(y-1)*cols].flagged = false;
-                    cells[(x)+(y-1)*cols].flagged = false;
-                    cells[(x)+(y)*cols].flagged = false;
+                    for(var i = x-1; i < x+2; i++){
+                      for(var j = y-1; j < y + 2; j++){
+                        var cell = cells[getIndex(i,j)];
+                        if(cell && i < cols && i >= 0 && j < rows && j >= 0){
+                          if(cell.state == 1) cell.state = 0;
+                          cell.flagged = false;
+                        }
+                      }
+                    }
+
+                    for(var i = x-1; i < x+2; i++){
+                      for(var j = y-1; j < y + 2; j++){
+                        var cell = cells[getIndex(i,j)];
+                        if(cell && i < cols && i >= 0 && j < rows && j >= 0){
+                          checkNeighbors(i,j);
+                        }
+                      }
+                    }
 
 
                 }
                 clicks++;
-                cycles = 0;
-               //checkNeighbors(x,y);
             }
         }
     }
+}
+
+function getIndex(x,y){
+  return x + y * cols;
 }
 
 function keyPressed(){
@@ -122,242 +125,87 @@ function keyPressed(){
             if(cells[index].state == 0 || cells[index].state == 1){
               cells[index].flagged = !cells[index].flagged;
             }
-            
-            
+
+
         }
     }
 }
 
 function getAlive(x,y){
     var count = 0;
-      if(x != 0){
-        if(y != rows-1){
-          var index = (x-1) + (y+1) * cols;
-          if(cells[index].state == 1 || cells[index].state == 3){
-            count++;
-          }
-        }
-        if(y != 0){
-          var index = (x-1) + (y-1) * cols;
-          if(cells[index].state == 1 || cells[index].state == 3){
-            count++;
-          }
-        }
-        var index = (x-1) + (y) * cols;
-        if(cells[index].state == 1 || cells[index].state == 3){
+
+    for(var i = x-1; i < x+2; i++){
+      for(var j = y-1; j < y + 2; j++){
+        var cell = cells[getIndex(i,j)];
+        if(cell && (cell.state == 1 || cell.state == 3) && i < cols && i >= 0 && j < rows && j >= 0){
           count++;
         }
       }
-    
-      if(y != rows-1){
-        var index = (x) + (y+1) * cols;
-        if(cells[index].state == 1 || cells[index].state == 3){
-          count++;
-        }
-      }
-      if(y != 0){
-        var index = (x) + (y-1) * cols;
-        if(cells[index].state == 1 || cells[index].state == 3){
-          count++;
-        }
-      }
-    
-      if(x!= cols-1){
-        if(y != rows-1){
-          var index = (x+1) + (y+1) * cols;
-          if(cells[index].state == 1 || cells[index].state == 3){
-            count++;
-          }
-        }
-        if(y!=0){
-          var index = (x+1) + (y-1) * cols;
-          if(cells[index].state == 1 || cells[index].state == 3){
-            count++;
-          }
-        }
-        var index = (x+1) + (y) * cols;
-        if(cells[index].state == 1 || cells[index].state == 3){
-          count++;
-        }
-      }
+    }
       return count;
 }
 
 function getFlagged(x,y){
     var count = 0;
-      if(x != 0){
-        if(y != rows-1){
-          var index = (x-1) + (y+1) * cols;
-          if(cells[index].flagged == true){
-            count++;
-          }
-        }
-        if(y != 0){
-          var index = (x-1) + (y-1) * cols;
-          if(cells[index].flagged == true){
-            count++;
-          }
-        }
-        var index = (x-1) + (y) * cols;
-        if(cells[index].flagged == true){
+    for(var i = x-1; i < x+2; i++){
+      for(var j = y-1; j < y + 2; j++){
+        var cell = cells[getIndex(i,j)];
+        if(cell && (cell.flagged) && i < cols && i >= 0 && j < rows && j >= 0){
           count++;
         }
       }
-    
-      if(y != rows-1){
-        var index = (x) + (y+1) * cols;
-        if(cells[index].flagged == true){
-          count++;
-        }
-      }
-      if(y != 0){
-        var index = (x) + (y-1) * cols;
-        if(cells[index].flagged == true){
-          count++;
-        }
-      }
-    
-      if(x!= cols-1){
-        if(y != rows-1){
-          var index = (x+1) + (y+1) * cols;
-          if(cells[index].flagged == true){
-            count++;
-          }
-        }
-        if(y!=0){
-          var index = (x+1) + (y-1) * cols;
-            if(cells[index].flagged == true){
-            count++;
-          }
-        }
-        var index = (x+1) + (y) * cols;
-        if(cells[index].flagged == true){
-          count++;
-        }
-      }
-      return count;
+    }
+    return count;
 }
 
 function removeUnflagged(x,y){
-    if(x != 0){
-        
-      if(y != rows-1){
-        var index = (x-1) + (y+1) * cols;
-        if(cells[index].flagged == false){
-            if(cells[index].state == 0){
-                cells[index].state = 2;
-            }else if(cells[index].state == 1){
-                cells[index].state = 3;
-                dead = true;
-            }
-        }
-      }
-      
-      if(y != 0){
-        var index = (x-1) + (y-1) * cols;
-     if(cells[index].flagged == false){
-         if(cells[index].state == 0){
-             cells[index].state = 2;
-         }else if(cells[index].state == 1){
-             cells[index].state = 3;
-             dead = true;
-         }
-     }
-      }
-      
-      var index = (x-1) + (y) * cols;
-     if(cells[index].flagged == false){
-         if(cells[index].state == 0){
-             cells[index].state = 2;
-         }else if(cells[index].state == 1){
-             cells[index].state = 3;
-             dead = true;
-         }
-     }
-    }
-  
-    if(y != rows-1){
-      var index = (x) + (y+1) * cols;
-    if(cells[index].flagged == false){
-        if(cells[index].state == 0){
-            cells[index].state = 2;
-        }else if(cells[index].state == 1){
-            cells[index].state = 3;
-            dead = true;
-        }
-    }
-    }
-    
-    if(y != 0){
-      var index = (x) + (y-1) * cols;
-      if(cells[index].flagged == false){
-          if(cells[index].state == 0){
-              cells[index].state = 2;
-          }else if(cells[index].state == 1){
-              cells[index].state = 3;
+
+  for(var i = x-1; i < x+2; i++){
+    for(var j = y-1; j < y + 2; j++){
+      var cell = cells[getIndex(i,j)];
+      if(cell && i < cols && i >= 0 && j < rows && j >= 0){
+        if(!cell.flagged){
+            if(cell.state == 0){
+              if(getAlive() >0){
+                cell.state = 2;
+              }else{
+                checkNeighbors(i,j);
+              }
+            }else if(cell.state == 1){
+              cell.state = 3;
               dead = true;
-          }
-      }
-    }
-  
-    if(x!= cols-1){
-        
-      if(y != rows-1){
-        var index = (x+1) + (y+1) * cols;
-        if(cells[index].flagged == false){
-            if(cells[index].state == 0){
-                cells[index].state = 2;
-            }else if(cells[index].state == 1){
-                cells[index].state = 3;
-                dead = true;
             }
         }
       }
-      
-      if(y!=0){
-        var index = (x+1) + (y-1) * cols;
-        if(cells[index].flagged == false){
-            if(cells[index].state == 0){
-                cells[index].state = 2;
-            }else if(cells[index].state == 1){
-                cells[index].state = 3;
-                dead = true;
-            }
-        }
-      }
-      
-      var index = (x+1) + (y) * cols;
-     if(cells[index].flagged == false){
-         if(cells[index].state == 0){
-             cells[index].state = 2;
-         }else if(cells[index].state == 1){
-             cells[index].state = 3;
-             dead = true;
-         }
-     }
     }
+  }
+
 }
 
 function checkNeighbors(x,y){
-    var index = x + y * cols;
-    if(cells[index] != null){
-        if((getAlive(x,y) == 0 && (cells[index].state != 1 && cells[index].state != 2)) || cycles ==0){
-            cycles++;
-            cells[index].state == 2;
-            checkNeighbors(x,y+1);
-            checkNeighbors(x,y-1);
-            checkNeighbors(x+1,y+1);
-            checkNeighbors(x-1,y+1);
-            checkNeighbors(x+1,y-1);
-            checkNeighbors(x-1,y-1);
-            checkNeighbors(x+1,y);
-            checkNeighbors(x-1,y);
-            
-        }else{
-            if(cells[index].state != 1 && cells[index].state != 2){
-                cells[index].state = 2;
-            }
-        }
-    }
-}
+  var cell = cells[getIndex(x,y)];
+  print("(" + x + ", " + y + ")");
+  if(cell && x < cols && x >= 0 && y < rows && y >= 0){
+    if((getAlive(x,y) == 0) && (cell.state != 1 && cell.state != 2 && !cell.flagged)){
+      cycles++;
+      cell.state = 2;
+      /*checkNeighbors(x-1,y);
+      checkNeighbors(x+1,y);
+      checkNeighbors(x,y+1);
+      checkNeighbors(x,y-1);*/
 
+      for(var i = x-1; i < x+2; i++){
+        for(var j = y-1; j < y + 2; j++){
+          var cell = cells[getIndex(i,j)];
+          if(cell && i < cols && i >= 0 && j < rows && j >= 0){
+            checkNeighbors(i,j);
+          }
+        }
+      }
+
+    }else{
+      if(cell.state != 1 && cell.flagged == false) cell.state = 2;
+    }
+  }
+
+}
