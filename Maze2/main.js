@@ -1,6 +1,6 @@
 /*Adapted from recursive backtracker algorithm on https://en.wikipedia.org/wiki/Maze_generation_algorithm*/
 
-var scl = 20;
+var scl = 40;
 var cols, rows;
 
 var grid = [];
