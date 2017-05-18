@@ -1,4 +1,6 @@
-const scl = 20;
+/*Adapted from recursive backtracker algorithm on https://en.wikipedia.org/wiki/Maze_generation_algorithm*/
+
+var scl = 20;
 var cols, rows;
 
 var grid = [];
@@ -7,7 +9,8 @@ var state =0;
 
 var cheating = false;
 function setup(){
-    createCanvas(643,483);
+    var canvas = createCanvas(643,483);
+    canvas.parent("maze");
      reset();
     
     var player = grid[0];
@@ -21,42 +24,47 @@ function reset(){
 function keyPressed(){
     if(key == 'R'){
         reset();
-    }else if(key == 'W' || keyCode == UP_ARROW){
-        var box = grid[getIndex(player.col, player.row-1)];
-        if(box && !player.top) player = box;
-    }else if(key == 'A' || keyCode == LEFT_ARROW){
-         var box = grid[getIndex(player.col-1, player.row)];
-         if(box && !player.left) player = box;
-    }else if(key == 'S' || keyCode == DOWN_ARROW){
-         var box = grid[getIndex(player.col, player.row+1)];
-         if(box && !player.bottom) player = box;
-         
-         if(player == grid[grid.length-1]){
-             state = 1;
-         }
-    }else if(key == 'D' || keyCode == RIGHT_ARROW){
-         var box = grid[getIndex(player.col+1, player.row)];
-         if(box && !player.right) player = box;
-    }else if(key == " "){
-        cheating = !cheating;
+    }
+    
+    if(state == 0){
+        if(key == 'W' || keyCode == UP_ARROW){
+            var box = grid[getIndex(player.col, player.row-1)];
+            if(box && !player.top){
+                player = box;
+                player.inPath = true;
+            }
+        }else if(key == 'A' || keyCode == LEFT_ARROW){
+             var box = grid[getIndex(player.col-1, player.row)];
+             if(box && !player.left){
+               player = box;
+               player.inPath = true;
+             } 
+        }else if(key == 'S' || keyCode == DOWN_ARROW){
+             var box = grid[getIndex(player.col, player.row+1)];
+             if(box && !player.bottom){
+                 player = box;
+                 player.inPath = true;
+             }
+             
+             if(player == grid[grid.length-1]){
+                 state = 1;
+             }
+        }else if(key == 'D' || keyCode == RIGHT_ARROW){
+             var box = grid[getIndex(player.col+1, player.row)];
+             if(box && !player.right){ 
+                 player = box;
+                 player.inPath = true;
+             }
+        }else if(key == " "){
+            cheating = !cheating;
+        }
     }
 }
 
 function draw(){
     background(51);
-    if(state == 0){
-        drawGrid();
-    }else{
-        push();
-        textAlign(CENTER);
-        textSize(50);
-        fill(255);
-        noStroke();
-        text("Congratulations",width/2,height/2);
-        text("R to reset", width/2, height/2 + 50);
-        pop();
-
-    }
+    drawGrid();
+    
 }
 
 function generate(){
@@ -79,6 +87,7 @@ function generate(){
     current.top = false;
     
     player = grid[0];
+    player.inPath = true;
     
     var cells_left = grid.length;
 
@@ -121,7 +130,7 @@ function drawGrid(){
             displayed[i].display();
         }
         
-        if(cheating){
+        if(state == 1 || cheating){
             for(var i = 0; i < grid.length; i++){
                 grid[i].display();
             }
