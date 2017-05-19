@@ -177,7 +177,7 @@ function Player(id){
     this.removePowerup = function(id){
 
       if(id == 7){
-        setTimeout(this.removeInvincibility,2000);
+        setTimeout(this.removeInvincibility,3000);
         if(this.id == 0) this.maxSpeed = 2.1;
         if(this.id == 1) this.maxSpeed = 1.7;
         if(this.id == 2) this.maxSpeed = 3.5;
