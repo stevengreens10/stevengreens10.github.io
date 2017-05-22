@@ -72,6 +72,7 @@ function drawGrid(){
 
 function generate(){
     clicks = 0;
+    numFlagged = 0;
     for(x = 0; x < cols; x++){
         for(y = 0; y < rows; y++){
             var index = x + y * cols;
