@@ -118,7 +118,7 @@ function mousePressed(){
                     }
                 }
 
-               /* if(clicks == 0){
+                if(clicks == 0){
                     for(var i = x-1; i < x+2; i++){
                       for(var j = y-1; j < y + 2; j++){
                         var cell = cells[getIndex(i,j)];
@@ -137,14 +137,35 @@ function mousePressed(){
                         }
                       }
                     }
-
-
+                    
+                    if(getMines() < numMines){
+                        for(var i = 0; i < (numMines - getMines()+1) ; i++){
+                            var index = floor(random(cells.length));
+                            var cell = cells[index];
+                            if(cell.state == 0){
+                                cells[index].state = 1;
+                            }else{
+                                i--;
+                                continue;
+                            }
+                        }
+                    }
+                    
+                    print(getMines());
                 }
-                clicks++;*/
+                clicks++;
             }
         }
     }
 }
+
+function getMines(){
+    var mines = 0;
+    for(var i = 0; i < cells.length; i++){
+        if(cells[i].state == 1) mines++;
+    }
+    return mines;
+}    
 
 function getIndex(x,y){
   return x + y * cols;
@@ -245,4 +266,5 @@ function checkNeighbors(x,y){
       if(cell.state != 1 && cell.flagged == false) cell.state = 2;
     }
   }
+
 }
