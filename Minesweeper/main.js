@@ -84,16 +84,14 @@ function generate(){
         }
     }
     
-    for(var i = 0; i < numMines; i++){
+    while(getMines() < numMines){
         var index = floor(random(cells.length));
         var cell = cells[index];
         if(cell.state == 0){
             cells[index].state = 1;
-        }else{
-            i--;
-            continue;
         }
     }
+    
 }
 
 function mousePressed(){
@@ -139,19 +137,14 @@ function mousePressed(){
                     }
                     
                     if(getMines() < numMines){
-                        for(var i = 0; i < (numMines - getMines()+1) ; i++){
+                        while(getMines() < numMines){
                             var index = floor(random(cells.length));
                             var cell = cells[index];
                             if(cell.state == 0){
                                 cells[index].state = 1;
-                            }else{
-                                i--;
-                                continue;
                             }
                         }
                     }
-                    
-                    print(getMines());
                 }
                 clicks++;
             }
@@ -172,7 +165,7 @@ function getIndex(x,y){
 }
 
 function keyPressed(){
-    if(dead){
+    if(dead || won){
         dead = false;
         generate();
     }else if(!won){
