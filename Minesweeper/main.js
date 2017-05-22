@@ -54,11 +54,13 @@ function checkValid(){
 }
 
 function drawGrid(){
+    numFlagged = 0;
     for(x = 0; x < cols; x++){
         for(y = 0; y < rows; y++){
             var index = x+y * cols;
             cells[index].display();
             var alive = getAlive(x,y);
+            if(cells[index].flagged) numFlagged++;
            if(cells[index].state == 2){
                 fill(0);
                 if(alive >0){
@@ -68,6 +70,7 @@ function drawGrid(){
            }
         }
     }
+    flaggedP.html(numFlagged + " / " + numMines);
 }
 
 function generate(){
@@ -163,7 +166,6 @@ function keyPressed(){
               }else{
                   numFlagged--;
               }
-              flaggedP.html(numFlagged + " / " + numMines);
             }
 
 
