@@ -171,6 +171,8 @@ function keyPressed(){
 
         }
     }
+    
+    if(key == " " || keyCode == DOWN_ARROW || keyCode == UP_ARROW) return false;
 }
 
 function getAlive(x,y){
