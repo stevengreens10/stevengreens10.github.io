@@ -118,7 +118,7 @@ function mousePressed(){
                     }
                 }
 
-                if(clicks == 0){
+               /* if(clicks == 0){
                     for(var i = x-1; i < x+2; i++){
                       for(var j = y-1; j < y + 2; j++){
                         var cell = cells[getIndex(i,j)];
@@ -140,7 +140,7 @@ function mousePressed(){
 
 
                 }
-                clicks++;
+                clicks++;*/
             }
         }
     }
@@ -245,5 +245,4 @@ function checkNeighbors(x,y){
       if(cell.state != 1 && cell.flagged == false) cell.state = 2;
     }
   }
-
 }
