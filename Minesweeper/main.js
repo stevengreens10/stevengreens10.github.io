@@ -5,6 +5,10 @@ var scl;
 var dead = false;
 var cycles = 0;
 var count =0;
+var numMines = 99;
+var numFlagged = 0;
+var flaggedP;
+var won = false;
 
 function setup(){
     cols = 24;
@@ -14,6 +18,9 @@ function setup(){
     createCanvas(cols*scl+1,rows*scl+1);
 
     generate();
+    
+    flaggedP = createP(numFlagged + " / " + numMines);
+
 
 }
 
@@ -23,9 +30,27 @@ function draw(){
     textSize(15);
     if(dead){
         text("Press a key to reset",20,height-10);
-    }else{
+    }else if(!won){
         text("Press a key to place a flag",20,height-10);
+    }else{
+        text("You won!", 20, height-10);
     }
+    
+    if(numFlagged == numMines){
+        won = checkValid();
+    }
+    
+}
+
+function checkValid(){
+    var valid = true;
+    
+    for(var i = 0; i < cells.length; i++){
+        if(cells[i].state == 1 && !cells[i].flagged) valid = false;
+        if(cells[i].state != 1 && cells[i].flagged) valid = false;
+    }
+    
+    return valid;
 }
 
 function drawGrid(){
@@ -51,10 +76,18 @@ function generate(){
         for(y = 0; y < rows; y++){
             var index = x + y * cols;
             var state =0;
-            if(random(100) < 17.18){
-                state = 1;
-            }
             cells[index] = new Cell(state,x,y);
+        }
+    }
+    
+    for(var i = 0; i < numMines; i++){
+        var index = floor(random(cells.length));
+        var cell = cells[index];
+        if(cell.state == 0){
+            cells[index].state = 1;
+        }else{
+            i--;
+            continue;
         }
     }
 }
@@ -62,7 +95,7 @@ function generate(){
 function mousePressed(){
 
 
-    if(!dead){
+    if(!dead && !won){
         if(mouseX >0 && mouseX < width && mouseY < height && mouseY > 0){
             var x = int(mouseX/scl);
             var y = int(mouseY/scl);
@@ -117,13 +150,19 @@ function keyPressed(){
     if(dead){
         dead = false;
         generate();
-    }else{
+    }else if(!won){
         if(mouseX >0 && mouseX < width && mouseY < height && mouseY > 0){
             var x = int(mouseX/scl);
             var y  = int(mouseY/scl);
             var index = x + y *cols;
             if(cells[index].state == 0 || cells[index].state == 1){
               cells[index].flagged = !cells[index].flagged;
+              if(cells[index].flagged){
+                  numFlagged++;
+              }else{
+                  numFlagged--;
+              }
+              flaggedP.html(numFlagged + " / " + numMines);
             }
 
 
