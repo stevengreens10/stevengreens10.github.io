@@ -167,6 +167,7 @@ function getIndex(x,y){
 function keyPressed(){
     if(dead || won){
         dead = false;
+        won = false;
         generate();
     }else if(!won){
         if(mouseX >0 && mouseX < width && mouseY < height && mouseY > 0){
