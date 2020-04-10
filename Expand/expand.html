@@ -1,0 +1,150 @@
+<html>
+
+  <head>
+    <style>
+      .treeView{
+        -moz-user-select:none;
+        position:relative;
+      }
+
+      .treeView ul{
+        margin:0 0 0 -1.5em;
+        padding:0 0 0 1.5em;
+      }
+
+      .treeView ul ul{
+        background:url('res/list-item-contents.png') repeat-y left;
+      }
+
+      .treeView li.lastChild > ul{
+        background-image:none;
+      }
+
+      .treeView li{
+        margin:0;
+        padding:0;
+        background:url('res/list-item-root.png') no-repeat top left;
+        list-style-position:inside;
+        list-style-image:url('res/button.png');
+        cursor:auto;
+      }
+
+      .treeView li.collapsibleListOpen{
+        list-style-image:url('res/button-open.png');
+        cursor:pointer;
+      }
+
+      .treeView li.collapsibleListClosed{
+        list-style-image:url('res/button-closed.png');
+        cursor:pointer;
+      }
+
+      .treeView li li{
+        background-image:url('res/list-item.png');
+        padding-left:1.5em;
+      }
+
+      .treeView li.lastChild{
+        background-image:url('res/list-item-last.png');
+      }
+
+      .treeView li.collapsibleListOpen{
+        background-image:url('res/list-item-open.png');
+      }
+
+      .treeView li.collapsibleListOpen.lastChild{
+        background-image:url('res/list-item-last-open.png');
+      }
+
+    </style>
+  </head>
+
+  <body>
+      <input type="file" id="listfile"/>
+      <ul class="treeView">
+        <li tabindex="1234" id="set-focus">
+          Properties
+          <ul id="root" class="collapsibleList"></ul>
+        </li>
+      </ul>
+    
+    <script src="./res/expand.js"></script>
+    <script src="./res/CollapsibleLists.js"></script>
+    <script>
+      let root = null;
+      function createList(content) {
+        root = createExpandingTree(content);
+        let rootList = document.getElementById("root");
+        rootList.innerHtml = '';
+        traverse(root, rootList);
+        CollapsibleLists.apply();
+        document.getElementById("set-focus").focus();
+      }
+      
+      function traverse(parentNode, parentList) {
+        for(var i = 0; i < parentNode.children.length; i++) {
+          let child = parentNode.children[i];
+          
+          let li = document.createElement("li");
+          li.textContent = child.text;
+          li.setAttribute("tabindex", "1234");
+          parentList.appendChild(li);
+          
+          if(child.children.length > 0) {
+            newParentList = document.createElement("ul");
+            li.appendChild(newParentList);
+            traverse(child, newParentList);
+          }
+        }
+      }
+    
+    
+      const fileInput = document.getElementById("listfile");
+      fileInput.addEventListener("change", getFile);
+      
+      function getFile(event) {
+        const input = event.target
+        if ('files' in input && input.files.length > 0) {
+          placeFileContent(input.files[0])
+        }
+      }
+
+      function placeFileContent(file) {
+        readFileContent(file).then(content => {
+          createList(content)
+        }).catch(error => console.log(error))
+      }
+
+      function readFileContent(file) {
+        const reader = new FileReader()
+        return new Promise((resolve, reject) => {
+          reader.onload = event => resolve(event.target.result)
+          reader.onerror = error => reject(error)
+          reader.readAsText(file)
+        })
+      }
+      
+      window.addEventListener('keydown', function(e) {
+        let elt = document.activeElement;
+        if(e.keyCode == 32) {
+          elt.click();
+          e.preventDefault();
+        }
+        
+        // ->
+        if(e.keyCode == 39 && elt.classList.contains("collapsibleListClosed")) {
+          elt.click();
+          e.preventDefault();
+        }
+        
+        // <-
+        if(e.keyCode == 37 && elt.classList.contains("collapsibleListOpen")) {
+          elt.click();
+          e.preventDefault();
+        }
+      });
+      
+    </script>
+  </body>
+
+</html>
